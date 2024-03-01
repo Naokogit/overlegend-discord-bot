@@ -1,12 +1,14 @@
 require('dotenv').config();
 const fs = require('fs');
 const path = require('path');
-const { Client, IntentsBitField, Collection, GatewayIntentBits, Routes, REST } = require("discord.js");
+const { Client, IntentsBitField, Collection, GatewayIntentBits, ActivityTypes,  } = require("discord.js");
 const { clientId, guildId } = require('./config.json');
 
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildPresences,
+
         // IntentsBitField.Flags.Guilds,
         // IntentsBitField.Flags.GuildMembers,
         // IntentsBitField.Flags.GuildMessages,
@@ -44,29 +46,5 @@ for (const file of eventFiles) {
 		client.on(event.name, (...args) => event.execute(...args));
 	}
 }
-
-const rest = new REST().setToken(process.env.TOKEN);
-
-// and deploy your commands!
-// (async () => {
-// 	try {
-// 		console.log(`Started refreshing ${client.commands.length} application (/) commands.`);
-
-// 		// The put method is used to fully refresh all commands in the guild with the current set
-// 		const data = await rest.put(
-// 			Routes.applicationGuildCommands(clientId, guildId),
-// 			{ body: client.commands.body },
-// 		);
-
-// 		console.log(`Successfully reloaded ${data.length} application (/) commands.`);
-// 	} catch (error) {
-// 		// And of course, make sure you catch and log any errors!
-// 		console.error(error);
-// 	}
-// })();
-
-// client.on('ready', function(c){
-//     console.log(`👌 ${c.user.tag} is online,`);
-// });
 
 client.login(process.env.TOKEN);
