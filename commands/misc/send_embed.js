@@ -1,4 +1,4 @@
-const {SlashCommandBuilder, ChannelType, EmbedBuilder} = require('discord.js');
+const {SlashCommandBuilder, ChannelType, EmbedBuilder, CommandInteraction} = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -9,6 +9,9 @@ module.exports = {
             .setRequired(true)
             .setDescription('Specify channel')
             .addChannelTypes(ChannelType.GuildText)),
+    /**
+     * @param {CommandInteraction} interaction 
+     */
     async execute(interaction){
         const channel = interaction.options.getChannel('channel');
 
@@ -19,7 +22,7 @@ module.exports = {
         .setTitle(`Embed sparato su ${channel.name}`)
         .setDescription(`diobubu`)
         
-        channel_interaction.send({embeds: [exampleEmbed]});
+        channel_interaction.send({ embeds: [exampleEmbed] });
+        interaction.reply({ content: `Embed sparato su ${channel.name}`, ephemeral: true });
     },
-
 }
