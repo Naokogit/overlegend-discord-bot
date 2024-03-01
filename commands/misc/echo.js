@@ -11,7 +11,6 @@ module.exports = {
 	.addChannelOption(option =>
 		option.setName('channel')
 			.setDescription('The channel to echo into')
-			// Ensure the user can only select a TextChannel for output
 			.addChannelTypes(ChannelType.GuildText))
 	.addBooleanOption(option =>
 		option.setName('embed')

@@ -13,7 +13,6 @@ module.exports = {
             console.log(`${channel.name} (${channel.type}) - ${channel.id}`);
             if(channel.name === 'boh')
                 interaction.client.channels.cache.get(channel.id).send('content');
-
         });
 
         const id = guild.channels.cache.filter((channel) => channel.name === 'boh').first().id;
