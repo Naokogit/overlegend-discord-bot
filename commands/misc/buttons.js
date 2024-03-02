@@ -4,11 +4,12 @@ module.exports = {
     data:new SlashCommandBuilder()
     .setName('buttons')
     .setDescription('Invia mex con buttons'),
-        /**
-         * 
-         * @param {CommandInteraction} interaction 
-         */
+    /**
+     * 
+     * @param {CommandInteraction} interaction 
+     */
     async execute(interaction) {
+        
         const confirm = new ButtonBuilder()
             .setCustomId('confirm')
             .setLabel('Confirm Ban')
