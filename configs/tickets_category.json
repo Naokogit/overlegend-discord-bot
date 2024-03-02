@@ -1,0 +1,30 @@
+[   
+    {
+        "label": "Supporto Modalità",
+        "emoji": "🕹",
+        "long_description": "Per richieste specifiche di supporto per una modalità del Network o per segnalazioni di giocatori o bug",
+        "description": "Supporto per giochi, giocatori e bug.",
+        "value": "createTicket_gamemode"
+    },
+    {
+        "label": "Supporto Account",
+        "emoji": "🔑",
+        "long_description": "Per aiuto nella gestione del proprio account, richiedere trasferimenti, reset password, etc.",
+        "description": "Aiuto gestione, trasferimenti, reset password.",
+        "value": "createTicket_account"
+    },
+    {
+        "label": "Supporto Commerciale",
+        "emoji": "💸",
+        "long_description": "Per richiedere supporto generale negli acquisti, recuperare un pacchetto VIP, oppure richiedere una collaborazione",
+        "description": "Supporto acquisti, VIP, collaborazioni.",
+        "value": "createTicket_commercial"
+    },
+    {
+        "label": "Candidature",
+        "emoji": "📝",
+        "long_description": "Per richieste di arruolamento nel nostro Staff.",
+        "description": "Per richieste di arruolamento nel nostro Staff.",
+        "value": "createTicket_application"
+    }
+]
