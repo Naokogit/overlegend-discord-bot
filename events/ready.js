@@ -13,13 +13,12 @@ module.exports = {
 	 * @param {Client} client 
 	 */
 	async execute(client) {
-		console.log(`Ready! Logged in as ${client.user.tag}`);
+		console.log(`Bot ready! Logged in as ${client.user.tag}`);
 		
-		
+		client.user.set
 		client.user.setActivity({
-			name: '🗺 Streaming Status!',
-			type: ActivityType.Streaming,
-			url: 'https://www.twitch.tv/discord'
+			name: 'OverLegend',
+			type: ActivityType.Playing,
 		})
 		// client.user.setPresence({ activities: [{ name: 'mc.overlegend.it' }], status: 'online' });
 

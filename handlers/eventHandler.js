@@ -5,6 +5,7 @@ module.exports = (client) =>{
 
 	const eventsPath = path.join(__dirname, '../events');
 	const files = getAllFiles(eventsPath);
+	console.log("Reading events...");
 	for(const file of files){
 		console.log(file);
 		const event = require(file);
