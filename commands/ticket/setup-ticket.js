@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, PermissionFlagsBits, ChannelType, CommandInteraction, ActionRowBuilder, ButtonBuilder, EmbedBuilder, ButtonStyle, ChatInputCommandInteraction, StringSelectMenuBuilder, } = require('discord.js');
 
-const tickets_category = require('../../configs/tickets_category.json');
+const { ticketCategories } = require('../../configs/tickets_category.json');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -27,12 +27,23 @@ module.exports = {
                 const channel = interaction.options.getChannel('channel');
                 const channel_interaction = interaction.client.channels.cache.get(channel.id);
 
+                const select = new StringSelectMenuBuilder()
+                .setCustomId('ticketCreateSelect')
+                .setPlaceholder('🌍 Seleziona una categoria')
+                .setMinValues(1)
+
                 var desc = "";
-                tickets_category.forEach(cat =>{
-                    desc += "**" + cat.emoji + " "+ cat.label + "**" + "\n";
-                    desc += "\`\`\`" + cat.long_description + "\`\`\`" + "\n";
-                });
-            
+                
+                for(const category of Object.keys(ticketCategories)){
+                    desc += "**" + ticketCategories[category].emoji + " "+ ticketCategories[category].label + "**" + "\n";
+                    desc += "\`\`\`" + ticketCategories[category].long_description + "\`\`\`" + "\n";
+                    console.log(category);
+                    ticketCategories[category].value = category;
+                    select.addOptions(ticketCategories[category]);
+                }
+
+                const row = new ActionRowBuilder().addComponents(select)
+                
                 const ticket_embed = new EmbedBuilder()
                     .setColor(0x503519)
                     .setTitle('SISTEMA DI SUPPORTO <:ol:1194007647582699590>')
@@ -46,28 +57,7 @@ module.exports = {
                     .setImage('https://images-ext-1.discordapp.net/external/xDmWfZQnKepl4YtOXjKymdzkbO6mecZuO54ji85CjJ4/https/imgur.com/u5w5CQr.png?format=webp&quality=lossless&width=1216&height=111')  
                     // .setFooter({text: "OverLegend • Sistema di supporto ticketing", iconURL: "https://i.imgur.com/IWbnKLl.png"})
                 
-                
-                    // const btn_open_ticket = new ButtonBuilder()
-                //     .setCustomId('confirm')
-                //     .setLabel('Apri un ticket')
-                //     .setEmoji('🎉')
-                //     .setStyle(ButtonStyle.Secondary)
-                //     .setCustomId('btn_open_ticket');
-                
-                // const row = new ActionRowBuilder()
-                //     .addComponents(btn_open_ticket);
-
-                const select = new ActionRowBuilder()
-                .addComponents(
-                    new StringSelectMenuBuilder()
-                    .setCustomId('ticketCreateSelect')
-                    .setPlaceholder('🌍 Seleziona una categoria')
-                    .setMinValues(1)
-                    .addOptions(tickets_category)
-                )
-                
-                await channel_interaction.send({embeds: [ticket_embed], components: [select]});
-                // await channel_interaction.send({embeds: [ticket_embed], components: [row]});
+                await channel_interaction.send({embeds: [ticket_embed], components: [row]});
                 await interaction.reply({content: 'Setup ticket effettuato', ephemeral: true});
         }
     }

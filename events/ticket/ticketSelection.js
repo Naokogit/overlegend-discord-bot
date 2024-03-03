@@ -1,16 +1,45 @@
 const { Events, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, ChannelType, PermissionsBitField, EmbedBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 
-const { ticketsCategory, ticketsRole, debug } = require('../../configs/config.json');
+const { ticketsRole, debug } = require('../../configs/config.json');
+
+const { ticketCategories } = require('../../configs/tickets_category.json');
+const ticketSchema = require("../../schemas/ticketSchema");
+
+
+function handlerGamemode(category, interaction){
+    console.log("gamemode");
+}
+function handlerAccount(category, interaction) {
+
+}
+
+function handlerCommercial(category, interaction){
+
+}
+
+function handlerApplication(category, interaction){
+
+}
 
 module.exports = {
+    
     name: Events.InteractionCreate,
     async execute(interaction, client) {
 
         if(interaction.customId === 'ticketCreateSelect'){
             
-            switch(interaction.values[0]){
-                case 'createTicket_gamemode':
-                    
+            const categorySelected = interaction.values[0];
+            const categoryHandlers = {};        
+
+            for(const category of Object.keys(ticketCategories)){
+                categoryHandlers[category] = eval("handler" + category.charAt(0).toUpperCase() + category.slice(1));
+            }
+
+            if(categoryHandlers[categorySelected])
+                categoryHandlers[categorySelected](category, interaction);
+
+            switch(categorySelected){
+                case 'gamemode':
                     const modal = new ModalBuilder()
                     .setCustomId('modalTicket_gamemode')
                     .setTitle('createTicket_gamemode');

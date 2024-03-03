@@ -3,10 +3,27 @@ const { Events, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder
 const { ticketsCategory, ticketsRole } = require('../../configs/config.json');
 const ticket = require('../../schemas/ticketSchema');
 
+const { ticketCategories } = require('../../configs/tickets_category.json');
+
 module.exports = {
     name: Events.InteractionCreate,
 
     async execute(interaction, client) {
+
+        // console.log(ticketCategories);
+
+        // let cazzo = "gamemode";
+
+        // for(const [key, value] of Object.entries(ticketCategories)){
+        //     console.log(`${key} ${cazzo}`);
+        //     console.log(cazzo==key);
+        //     console.log(ticketCategories[cazzo].emoji)
+        //     // for(const [k, v] of Object.entries(ticketCategories[key])){
+        //     //     console.log(`   ${k}: ${v}`);
+
+        //     // }
+        // }
+
         if(interaction.isModalSubmit() && interaction.customId === 'modalTicket_gamemode') {
             
             var category = 'gamemode';
