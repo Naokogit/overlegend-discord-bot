@@ -1,5 +1,5 @@
 const path = require('path');
-getAllFiles = require('../utils/getAllFiles')
+getAllFiles = require('../utils/getAllFiles');
 
 module.exports = (client) =>{
 

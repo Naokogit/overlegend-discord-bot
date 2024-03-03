@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits, ChannelType, CommandInteraction, ActionRowBuilder, ButtonBuilder, EmbedBuilder, ButtonStyle, ChatInputCommandInteraction, StringSelectMenuBuilder, } = require('discord.js');
 
-
 const tickets_category = require('../../configs/tickets_category.json');
 
 module.exports = {
@@ -45,8 +44,10 @@ module.exports = {
                     **⚠️ Non abusare del sistema dei ticket aprendone a vuoto. Può comportare una sospensione o un warn.**
                     `)
                     .setImage('https://images-ext-1.discordapp.net/external/xDmWfZQnKepl4YtOXjKymdzkbO6mecZuO54ji85CjJ4/https/imgur.com/u5w5CQr.png?format=webp&quality=lossless&width=1216&height=111')  
+                    // .setFooter({text: "OverLegend • Sistema di supporto ticketing", iconURL: "https://i.imgur.com/IWbnKLl.png"})
                 
-                // const btn_open_ticket = new ButtonBuilder()
+                
+                    // const btn_open_ticket = new ButtonBuilder()
                 //     .setCustomId('confirm')
                 //     .setLabel('Apri un ticket')
                 //     .setEmoji('🎉')

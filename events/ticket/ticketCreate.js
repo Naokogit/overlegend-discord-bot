@@ -1,28 +1,44 @@
-const { Events, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, ChannelType, PermissionsBitField, EmbedBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, Client} = require("discord.js");
+const { Events, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, ChannelType, PermissionsBitField, EmbedBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, Client, Embed} = require("discord.js");
 
 const { ticketsCategory, ticketsRole } = require('../../configs/config.json');
-
+const ticket = require('../../schemas/ticketSchema');
 
 module.exports = {
     name: Events.InteractionCreate,
-    /**
-     * 
-     * @param {CommandInteraction} interaction 
-     * @param {Client} client 
-     */
+
     async execute(interaction, client) {
         if(interaction.isModalSubmit() && interaction.customId === 'modalTicket_gamemode') {
             
+            var category = 'gamemode';
+
             const nickname = interaction.fields.getTextInputValue('nickname');
             const device = interaction.fields.getTextInputValue('device');
             const topic = interaction.fields.getTextInputValue('topic');
             const issue = interaction.fields.getTextInputValue('issue');
+            const userId = interaction.user.id;
 
+
+            const embedEphemeral = new EmbedBuilder()   
+                .setColor(0x503519)
+                .setTimestamp()
+                .setFooter({text: "OverLegend", iconURL: "https://i.imgur.com/IWbnKLl.png"})
+
+            const data = await ticket.findOne({category: category, userId: userId, status: 'open'});
+            if(data){
+                if(data.category === category){
+                    embedEphemeral
+                        .setDescription(`<@${interaction.user.id}> hai già un ticket della stessa categoria in <#${data.channelId}>`)
+                        .setTitle("Errore nell'apertura del ticket ❌")
+                    await interaction.reply({embeds: [embedEphemeral], ephemeral: true });
+                    return;
+                }
+            }
+            
             const channel = await interaction.guild.channels.create({
                 name: `${interaction.user.username}-ticket`,
                 type: ChannelType.GuildText,
                 parent: ticketsCategory,
-                topic: `Utente che ha aperto il ticket: ${interaction.user.username}`,
+                topic: `Utente che ha aperto il ticket: ${interaction.user.username}/${category}/${interaction.user.id}`,
                 permissionOverwrites: [
                     {
                         id: interaction.guild.id, // @everyone
@@ -33,12 +49,23 @@ module.exports = {
                         id: ticketsRole,
                         allow: [PermissionsBitField.Flags.ViewChannel],
                     },
-
+                    
                 ],
             });
-        
+            
+            console.log(`Creating a new ticket...`)
+            await ticket.create({
+                userId: userId,
+                channelId: channel.id,
+                category: category,
+                topic: topic,
+                nickname: nickname,
+                device: device,
+                issue: issue,
+            });
+
             const embed = new EmbedBuilder()
-                .setTitle('TICKET | [Supporto Modalità] aperto.')
+                .setTitle('TICKET | [Supporto Modalità]')
                 .setDescription(`Grazie per aver contattato l'assistenza.
                 Descrivi il tuo problema e attendi una risposta dallo staff.
                 Ticket aperto da: <@${interaction.user.id}>`)
@@ -77,10 +104,13 @@ module.exports = {
             await channel.send({embeds: [embed], components: [row]});
             var msg = await channel.send({content: `<@&${ticketsRole}>`});
             msg.delete().catch(err =>{});
-            await interaction.reply({
-                content: `<@${interaction.user.id}> consulta il ticket aperto in ${channel}`,
-                ephemeral: true
-            });
+
+            embedEphemeral
+                .setTitle('TICKET APERTO | Supporto Modalità')
+                .setDescription('Hai aperto un ticket')
+            //.setDescription(`<@${interaction.user.id}> consulta il ticket aperto in ${channel}`)
+                .addFields({name: "Ticket aperto :white_check_mark: ", value: `<@${interaction.user.id}> consulta il ticket aperto in ${channel}`})
+            await interaction.reply({embeds: [embedEphemeral], ephemeral: true});
         }
     }
 }
