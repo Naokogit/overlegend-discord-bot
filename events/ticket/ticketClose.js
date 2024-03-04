@@ -1,4 +1,4 @@
-const { Events, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, ChannelType, PermissionsBitField, EmbedBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, Client} = require("discord.js");
+const { Events, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, Client} = require("discord.js");
 const { createTranscript } = require('discord-html-transcripts');
 const { ticketsCategory, ticketsRole, ticketsDeposit } = require('../../configs/config.json');
 

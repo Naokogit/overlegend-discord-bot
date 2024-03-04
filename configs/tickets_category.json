@@ -10,7 +10,33 @@
             "label": "Supporto Account",
             "emoji": "🔑",
             "long_description": "Per aiuto nella gestione del proprio account, richiedere trasferimenti, reset password, etc.",
-            "description": "Aiuto gestione, trasferimenti, reset password."
+            "description": "Aiuto gestione, trasferimenti, reset password.",
+            "subcategory": [
+                {
+                    "label": "Richiesta Reset Password",
+                    "emoji": "⚙",
+                    "text": "Richiesta Reset Password",
+                    "id": "reset_password"
+                },
+                {
+                    "label": "Trasferimento Account",
+                    "emoji": "🔀",
+                    "text": "Richiedi un trasferimento account (SP -> PREMIUM, PREMIUM -> PREMIUM)",
+                    "id": "transfer_account"
+                },
+                {
+                    "label": "Account secondari",
+                    "emoji": "👨‍👨‍👦",
+                    "text": "Richiedi verifica dell'IP [Necessario fratelli/sorelle]",
+                    "id": "secondary_account"
+                },
+                {
+                    "label": "Problemi al Login/Register",
+                    "emoji": "🔀",
+                    "text": "Problemi relativi al Login o alla Registrazione",
+                    "id": "login_problems"
+                }
+            ]
         },
         "commercial": {
             "label": "Supporto Commerciale",
@@ -22,7 +48,27 @@
             "label": "Candidature",
             "emoji": "📝",
             "long_description": "Per richieste di arruolamento nel nostro Staff.",
-            "description": "Per richieste di arruolamento nel nostro Staff."
+            "description": "Per richieste di arruolamento nel nostro Staff.",
+            "subcategory": [
+                {
+                    "label": "Candidatura Sviluppatore",
+                    "emoji": "👜",
+                    "text": "Apri il ticket per candidarti come Sviluppatore",
+                    "id": "developer"
+                },
+                {
+                    "label": "Candidatura Builder",
+                    "emoji": "👜",
+                    "text": "Apri il ticket per candidarti come Builder",
+                    "id": "builder"
+                },
+                {
+                    "label": "Candidatura Helper",
+                    "emoji": "👜",
+                    "text": "Apri il ticket per candidarti come Helper",
+                    "id": "helper"
+                }
+            ]
         }
     }
 }
