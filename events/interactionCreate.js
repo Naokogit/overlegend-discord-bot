@@ -1,7 +1,4 @@
 const { Events } = require('discord.js');
-const wait = require('timers/promises').setTimeout;
-
-
 
 module.exports = {
 	name: Events.InteractionCreate,
@@ -17,12 +14,6 @@ module.exports = {
 		
 		try {
 			await command.execute(interaction);
-			// if (interaction.commandName === 'ping') {
-			// 	await interaction.deferReply('Pong!');
-			// 	await interaction.followUp('Pong again!');
-			// 	await wait(4_000);
-			// 	await interaction.editReply('Pong again!!!!');
-			// }
 		} catch (error) {
 			console.error(error);
 			if (interaction.replied || interaction.deferred) {

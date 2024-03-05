@@ -2,7 +2,6 @@ const { Collection, } = require("discord.js");
 const fs = require('fs');
 const path = require('path');
 
-
 function handler(client){
     client.commands = new Collection();
     const foldersPath = path.join(__dirname, '../commands');

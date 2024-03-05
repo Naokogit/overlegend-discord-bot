@@ -38,8 +38,6 @@ module.exports = {
             await interaction.reply({embeds: [embedConfirmDelete], components: [row], fetchReply: true});
         }
         if(interaction.isButton() && interaction.customId === 'btnConfirmClose'){
-            
-            // console.log(interaction);
 
             const ticketInformation = getTicketCacheInformation(interaction);
 
@@ -48,8 +46,8 @@ module.exports = {
             const data = await ticket.findOne(query);
             var reason = data?.closingReason;
 
-            await ticket.updateOne(query, {$set: {status: "closed"}});
-            // await ticket.deleteOne({userId: userId});
+            await ticket.updateOne(query, { $set: { status: "closed" } });
+            
             const file = await createTranscript(interaction.channel, {
                 limit: -1,
                 returnBuffer: false,
@@ -60,7 +58,7 @@ module.exports = {
             var msg = await interaction.channel.send({content: `Transcript cache:`, files: [file]});
             
             const transcriptURL = `https://mahto.id/chat-exporter?url=${msg.attachments.first()?.url}`
-            //console.log(msg.attachments.first()?.url);
+            
             await interaction.channel.delete().catch(err => { });
             
             const dmEmbed = new EmbedBuilder()
