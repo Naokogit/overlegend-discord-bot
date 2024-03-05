@@ -19,35 +19,23 @@ const getTicketCacheInformation = require("../../utils/getTicketCacheInformation
 
 const { ticketCategories } = require("../../configs/tickets_category.json");
 
-// var subcategories = []
-// for (const category of Object.keys(ticketCategories)) {
-//     if(ticketCategories[category].subcategory){
-//         subcategories[category] = [];
-//         ticketCategories[category].subcategory.forEach(cat => {
-//             subcategories[category].push("btnSubCategory_" + cat.id);
-//         });
-//     }
-// }
-
-// Mappa delle sottocategorie
-const subcategories = new Map();
-
-// Inizializza la mappa delle sottocategorie
+var subcategories = []
 for (const category of Object.keys(ticketCategories)) {
-    if (ticketCategories[category].subcategory) {
-        const subcategoryIds = ticketCategories[category].subcategory.map(cat => `btnSubCategory_${cat.id}`);
-        subcategories.set(category, subcategoryIds);
+    if(ticketCategories[category].subcategory){
+        subcategories[category] = [];
+        ticketCategories[category].subcategory.forEach(cat => {
+            subcategories[category].push("btnSubCategory_" + cat.id);
+        });
     }
 }
+
 
 module.exports = {
     name: Events.InteractionCreate,
     async execute(interaction) {
-        if (
-            interaction.isButton() &&
-            interaction.customId.includes("btnSubCategory")
-        ) {
+        if (interaction.isButton() && interaction.customId.includes("btnSubCategory")) {
             const category = isSubcategory(interaction.customId).category;
+            console.log("CATEGORY", category, interaction.customId);
             var subcategory = interaction.customId.replace("btnSubCategory_", "");
 
             ticketCategories[category].subcategory.forEach((element) => {
@@ -55,9 +43,10 @@ module.exports = {
             });
 
             const modal = new ModalBuilder()
-                .setCustomId(`modalTicket_${category}`)
-                .setTitle(`${subcategory.label}`);
-
+                .setCustomId(`modalTicket_${category}-${subcategory.id}`)
+                // .setTitle(`${subcategory.label}`);
+                .setTitle(`modalTicket_${category}-${subcategory.id}`);
+                
             switch (subcategory.id) {
                 case "reset_password":
                     const nicknameInput = new TextInputBuilder()
@@ -113,4 +102,5 @@ function isSubcategory(id) {
             return { found: true, category: category };
         }
     }
+    return { found: false, category: null };
 }

@@ -1,4 +1,4 @@
-const { Events, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, ChannelType, PermissionsBitField, EmbedBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, Client, Embed} = require("discord.js");
+const { Events, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, ChannelType, PermissionsBitField, EmbedBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, Client, Embed, shouldUseGlobalFetchAndWebSocket} = require("discord.js");
 
 const { ticketsCategory, ticketsRole } = require('../../configs/config.json');
 const ticket = require('../../schemas/ticketSchema');
@@ -128,6 +128,43 @@ module.exports = {
             //.setDescription(`<@${interaction.user.id}> consulta il ticket aperto in ${channel}`)
                 .addFields({name: "Ticket aperto :white_check_mark: ", value: `<@${interaction.user.id}> consulta il ticket aperto in ${channel}`})
             await interaction.reply({embeds: [embedEphemeral], ephemeral: true});
+        }
+        if(interaction.isModalSubmit() && interaction.customId.includes('modalTicket')) {
+
+            // category_sub-category
+            const category = interaction.customId.split('_')[1].split('-')[0];
+            const subcategory = interaction.customId.split('-')[1];
+
+            console.log(category, subcategory);
+
+            const userId = interaction.user.id;
+
+            const embedEphemeral = new EmbedBuilder()   
+            .setColor(0x503519)
+            .setTimestamp()
+            .setFooter({text: "OverLegend", iconURL: "https://i.imgur.com/IWbnKLl.png"})
+
+            const data = await ticket.findOne({category: category, subcategory: subcategory,userId: userId, status: 'open'});
+
+            if(data){
+                if(data.category === category){
+                    embedEphemeral
+                        .setDescription(`<@${interaction.user.id}> hai già un ticket della stessa categoria in <#${data.channelId}>`)
+                        .setTitle("Errore nell'apertura del ticket ❌")
+                    await interaction.reply({embeds: [embedEphemeral], ephemeral: true });
+                    return;
+                }
+            }
+
+
+            switch(category) {
+                case 'gamemode':
+                    const nickname = interaction.fields.getTextInputValue('nickname');
+                    const device = interaction.fields.getTextInputValue('device');
+                    const topic = interaction.fields.getTextInputValue('topic');
+                    const issue = interaction.fields.getTextInputValue('issue');
+                break;
+            }
         }
     }
 }
