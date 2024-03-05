@@ -30,6 +30,18 @@ const ticketSchema = new mongoose.Schema({
     issue: {
         type: String,
     },
+    newaccount: {
+        type: String,
+    },
+    secondaccount: {
+        type: String,
+    },
+    date: {
+        type: String,
+    },
+    devrole: {
+        type: String,
+    },
     status: {
         type: String,
         default: 'open'

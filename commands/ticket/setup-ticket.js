@@ -46,7 +46,7 @@ module.exports = {
                 const row = new ActionRowBuilder().addComponents(select)
                 
                 const ticket_embed = new EmbedBuilder()
-                    .setColor(primaryColor)
+                    .setColor(Number(primaryColor))
                     .setTitle('SISTEMA DI SUPPORTO <:ol:1194007647582699590>')
                     .setDescription(`
                     Selezionando una delle opzioni qua sotto potrai

@@ -1,6 +1,57 @@
-const { PermissionsBitField} = require("discord.js");
+const { PermissionsBitField } = require("discord.js");
 const { ticketsRole, adminRole } = require('../configs/config.json');
 
+// https://discord.com/developers/docs/topics/permissions#permissions-bitwise-permission-flags
+
+/*
+CreateInstantInvite
+KickMembers
+BanMembers
+Administrator
+ManageChannels
+ManageGuild
+AddReactions
+ViewAuditLog
+PrioritySpeaker
+Stream
+ViewChannel
+SendMessages
+SendTTSMessages
+ManageMessages
+EmbedLinks
+AttachFiles
+ReadMessageHistory
+MentionEveryone
+UseExternalEmojis
+ViewGuildInsights
+Connect
+Speak
+MuteMembers
+DeafenMembers
+MoveMembers
+UseVAD
+ChangeNickname
+ManageNicknames
+ManageRoles
+ManageWebhooks
+ManageEmojisAndStickers
+ManageGuildExpressions
+UseApplicationCommands
+RequestToSpeak
+ManageEvents
+ManageThreads
+CreatePublicThreads
+CreatePrivateThreads
+UseExternalStickers
+SendMessagesInThreads
+UseEmbeddedActivities
+ModerateMembers
+ViewCreatorMonetizationAnalytics
+UseSoundboard
+UseExternalSounds
+SendVoiceMessages
+
+*/
 
 function ticketPermissionDefault(interaction) {
     return [
@@ -11,9 +62,16 @@ function ticketPermissionDefault(interaction) {
             ],
         },
         {
-            id: interaction.user.id,
+            id: interaction.user.id, allow: [
+                PermissionsBitField.Flags.ViewChannel,
+                PermissionsBitField.Flags.SendMessages,
+                PermissionsBitField.Flags.EmbedLinks,
+                PermissionsBitField.Flags.ReadMessageHistory,
+            ],
+        },
+        {
             id: ticketsRole, allow: [
-                PermissionsBitField.Flags.ViewChannel
+                PermissionsBitField.Flags.ViewChannel,
             ],
         },
     ]
@@ -28,7 +86,14 @@ function ticketPermissionAdmin(interaction) {
             ],
         },
         {
-            id: interaction.user.id,
+            id: interaction.user.id, allow: [
+                PermissionsBitField.Flags.ViewChannel,
+                PermissionsBitField.Flags.SendMessages,
+                PermissionsBitField.Flags.EmbedLinks,
+                PermissionsBitField.Flags.ReadMessageHistory,
+            ]
+        },
+        {
             id: adminRole, allow: [
                 PermissionsBitField.Flags.ViewChannel
             ],

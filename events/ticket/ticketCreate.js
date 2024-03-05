@@ -24,7 +24,7 @@ module.exports = {
             const userId = interaction.user.id;
 
             const embedEphemeral = new EmbedBuilder()   
-                .setColor(primaryColor)
+                .setColor(Number(primaryColor))
                 .setTimestamp()
                 .setFooter({text: "OverLegend", iconURL: logoIMG});
             
@@ -56,6 +56,8 @@ module.exports = {
 
             ticketTitle = `${ticketCategories[category].label + " " + ticketCategories[category].emoji + (subcategory_label ? (" - " + subcategory_label) : "")}`;
             
+            console.log(interaction.user.id);
+
             switch (category) {
                 case 'gamemode':    
                     ticketName = `${interaction.user.username}-ticket`
@@ -90,6 +92,10 @@ module.exports = {
                 nickname: ticketProperties?.nickname,
                 device: ticketProperties?.device,
                 premium: ticketProperties?.premium,
+                newaccount: ticketProperties?.newaccount,
+                secondaccount: ticketProperties?.secondaccount,
+                date: ticketProperties?.date,
+                devrole: ticketProperties?.devrole,
             });
 
             const ticketEmbed = new EmbedBuilder()
@@ -99,15 +105,20 @@ module.exports = {
                 Ticket aperto da: <@${interaction.user.id}>`)
                 // .setThumbnail('https://i.imgur.com/IWbnKLl.png')
                 .setTimestamp()
-                .setColor(primaryColor)
+                .setColor(Number(primaryColor))
                 .setFooter({ text: "Data di creazione", iconURL: logoIMG });
             
             if(ticketProperties.nickname) ticketEmbed.addFields({ name: '👤 Nickname di Minecraft', value: `\`\`\`${ticketProperties.nickname}\`\`\`` });
             if(ticketProperties.device) ticketEmbed.addFields({ name: '🖥 Piattaforma', value: `\`\`\`${ticketProperties.device}\`\`\`` });
             if(ticketProperties.premium) ticketEmbed.addFields({ name: '🧊 Minecraft Premium', value: `\`\`\`${ticketProperties.premium}\`\`\`` });
+            if (ticketProperties.date) ticketEmbed.addFields({ name: '📆 Disponibilità orario', value: `\`\`\`${ticketProperties.date}\`\`\`` });
+            if (ticketProperties.devrole) ticketEmbed.addFields({ name: '⚒️ Ruolo desiderato', value: `\`\`\`${ticketProperties.devrole}\`\`\`` });
+            if (ticketProperties.newaccount) ticketEmbed.addFields({ name: '👤 Nuovo account', value: `\`\`\`${ticketProperties.newaccount}\`\`\`` });
+            if (ticketProperties.secondaccount) ticketEmbed.addFields({ name: '👤 Account secondario', value: `\`\`\`${ticketProperties.secondaccount}\`\`\`` });
             if(ticketProperties.topic) ticketEmbed.addFields({ name: '✨ Topic principale', value: `\`\`\`${ticketProperties.topic}\`\`\`` });
             if(ticketProperties.issue) ticketEmbed.addFields({ name: '🔧 Descrizione del problema', value: `\`\`\`${ticketProperties.issue}\`\`\`` });
-                
+
+
             const closeBtn = new ButtonBuilder()
                 .setEmoji('🔒')
                 .setLabel('Chiudi')
