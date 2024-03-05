@@ -8,7 +8,7 @@ const {
 
 const { ticketCategories } = require("../../configs/tickets_category.json");
 
-const { nicknameInput, issueInput, deviceInput, premiumInput } = require("../../modules/modalInputModule");
+const { nicknameInput, issueInput, deviceInput, premiumInput, newAccountInput, secondAccountInput, devroleInput, dateInput } = require("../../modules/modalInputModule");
 
 const {subcategories, isSubcategory} = require('../../utils/getAllSubcategories');
 
@@ -27,18 +27,47 @@ module.exports = {
 
             const modal = new ModalBuilder()
                 .setCustomId(`modalTicket_${category}-${subcategory.id}`)
-                .setTitle(`${category} | ${subcategory.id}`);
+                .setTitle(`${subcategory.label}`);
                 
             switch (subcategory.id) {
+                case "builder":
+                case "helper":
                 case "reset_password":
+                case "login_problems":
                     modal.addComponents(
                         new ActionRowBuilder().addComponents(nicknameInput),
                         new ActionRowBuilder().addComponents(issueInput),
                         new ActionRowBuilder().addComponents(deviceInput),
                         new ActionRowBuilder().addComponents(premiumInput)
                     );
-
-                break;
+                    break;
+                case "transfer_account":
+                    modal.addComponents(
+                        new ActionRowBuilder().addComponents(nicknameInput),
+                        new ActionRowBuilder().addComponents(issueInput),
+                        new ActionRowBuilder().addComponents(premiumInput),
+                        new ActionRowBuilder().addComponents(newAccountInput),
+                    );
+                    break;
+                case "secondary_account":
+                    modal.addComponents(
+                        new ActionRowBuilder().addComponents(nicknameInput),
+                        new ActionRowBuilder().addComponents(issueInput),
+                        new ActionRowBuilder().addComponents(premiumInput),
+                        new ActionRowBuilder().addComponents(secondAccountInput),
+                        new ActionRowBuilder().addComponents(dateInput),
+                        
+                    );
+                    break;
+                case "developer":
+                    modal.addComponents(
+                        new ActionRowBuilder().addComponents(nicknameInput),
+                        new ActionRowBuilder().addComponents(issueInput),
+                        new ActionRowBuilder().addComponents(deviceInput),
+                        new ActionRowBuilder().addComponents(premiumInput),
+                        new ActionRowBuilder().addComponents(devroleInput)
+                    );
+                    break;
             }
             await interaction.showModal(modal);
         }

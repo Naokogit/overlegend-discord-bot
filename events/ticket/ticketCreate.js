@@ -43,7 +43,7 @@ module.exports = {
             var ticketPermissionOverwrites;
             var ticketProperties = {};
             
-            const fields = ['nickname', 'device', 'topic', 'issue', 'premium'];
+            const fields = ['nickname', 'device', 'topic', 'issue', 'premium', 'newaccount', 'secondaccount', 'date', 'devrole'];
 
             fields.forEach(field => { try {
                     ticketProperties[field] = interaction.fields.getTextInputValue(field);
@@ -62,6 +62,10 @@ module.exports = {
                 case 'account':
                     ticketName = `${interaction.user.username}-account`
                     ticketPermissionOverwrites = ticketPermissionAdmin(interaction);
+                    break;
+                case 'application':
+                    ticketName = `${interaction.user.username}-candidatura`
+                    ticketPermissionOverwrites = ticketPermissionDefault(interaction);
                     break;
             }
                 

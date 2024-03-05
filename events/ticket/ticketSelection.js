@@ -32,22 +32,6 @@ module.exports = {
                         topicInput.setValue("Lorem Ipsum");
                         issueInput.setValue("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt");
                     }
-                    
-                    console.log(nicknameInput);
-
-                    const _nicknameInput = new TextInputBuilder()
-                    .setCustomId("nickname")
-                    .setLabel("Inserisci il tuo nickname sul gioco")
-                    .setStyle(TextInputStyle.Short)
-                    .setPlaceholder("Nickname sul server")
-                    .setMinLength(3)
-                    .setMaxLength(16)
-                    .setRequired(true);
-
-
-                    console.log(_nicknameInput);
-
-                    console.log(_nicknameInput === nicknameInput);
 
                     modal.addComponents(
                         new ActionRowBuilder().addComponents(nicknameInput), 
