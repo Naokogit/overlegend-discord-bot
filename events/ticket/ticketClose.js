@@ -9,33 +9,33 @@ module.exports = {
     name: Events.InteractionCreate,
     async execute(interaction) {
         if((interaction.isButton() && interaction.customId === 'btnCloseTicket') ||
-        (interaction.isModalSubmit() && interaction.customId === 'modalTicket_closeReason')){
+        (interaction.isModalSubmit() && interaction.customId === 'modalTicketCloseReason')){
 
             const embedConfirmDelete = new EmbedBuilder()
             .setTitle('Conferma chiusura Ticket')
             .setDescription('Clicca su conferma per chiudere il ticket')
             .setColor(0x503519);
 
-            if(interaction.isModalSubmit() && interaction.customId === 'modalTicket_closeReason'){
+            if(interaction.isModalSubmit() && interaction.customId === 'modalTicketCloseReason'){
                 const reason = interaction.fields.getTextInputValue('reason');
                 embedConfirmDelete.addFields({name: "Motivo", value: `*${reason}*`});
 
                 const user = getTicketCacheInformation(interaction);
 
-                cosnole.log(user);
-                //const result = await ticket.updateOne({userId: user.userId, status: "open", category: user.category}, {$set: {closingReason: reason}});
-                //console.log("Updating closingReason...", result);
+                console.log(user);
+                const result = await ticket.updateOne({userId: user.userId, status: "open", category: user.category}, {$set: {closingReason: reason}});
+                console.log("Updating closingReason...", result);
             }
 
-            // const confirmCloseBtn = new ButtonBuilder()
-            // .setEmoji('‼')
-            // .setLabel('Conferma')
-            // .setStyle(ButtonStyle.Danger)
-            // .setCustomId('btnConfirmClose');
+            const confirmCloseBtn = new ButtonBuilder()
+            .setEmoji('‼')
+            .setLabel('Conferma')
+            .setStyle(ButtonStyle.Danger)
+            .setCustomId('btnConfirmClose');
             
-            // const row = new ActionRowBuilder().addComponents(confirmCloseBtn);
+            const row = new ActionRowBuilder().addComponents(confirmCloseBtn);
                 
-            // await interaction.reply({embeds: [embedConfirmDelete], components: [row], fetchReply: true});
+            await interaction.reply({embeds: [embedConfirmDelete], components: [row], fetchReply: true});
         }
         if(interaction.isButton() && interaction.customId === 'btnConfirmClose'){
             
@@ -61,9 +61,7 @@ module.exports = {
             
             const transcriptURL = `https://mahto.id/chat-exporter?url=${msg.attachments.first()?.url}`
             //console.log(msg.attachments.first()?.url);
-            await interaction.channel.delete().catch(err => {});
-            // delete tickets[interaction.user.id];
-            
+            await interaction.channel.delete().catch(err => { });
             
             const dmEmbed = new EmbedBuilder()
             .setTitle('Ticket chiuso')
@@ -83,9 +81,6 @@ module.exports = {
             .setURL(transcriptURL)
             
             const dmRow = new ActionRowBuilder().addComponents(dmButton, dmTranscript);
-            
-            
-            // console.log(reason, interaction.isModalSubmit(), interaction.customId === 'modalTicket_closeReason');
 
             const dmDeposit = new EmbedBuilder()
             .setTitle('Ticket chiuso')
@@ -104,7 +99,7 @@ module.exports = {
         if(interaction.isButton() && interaction.customId === 'btnCloseReasonTicket'){
             if(interaction.member.roles.cache.some(r => r.id === ticketsRole)){
                 const modal = new ModalBuilder()
-                .setCustomId('modalTicket_closeReason')
+                .setCustomId('modalTicketCloseReason')
                 .setTitle('Motivo di chiusura ticket');
                 
                 const topicInput = new TextInputBuilder()
