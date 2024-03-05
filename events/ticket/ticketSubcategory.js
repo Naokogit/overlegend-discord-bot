@@ -29,7 +29,6 @@ for (const category of Object.keys(ticketCategories)) {
     }
 }
 
-
 module.exports = {
     name: Events.InteractionCreate,
     async execute(interaction) {
@@ -45,7 +44,7 @@ module.exports = {
             const modal = new ModalBuilder()
                 .setCustomId(`modalTicket_${category}-${subcategory.id}`)
                 // .setTitle(`${subcategory.label}`);
-                .setTitle(`modalTicket_${category}-${subcategory.id}`);
+                .setTitle(`${category} | ${subcategory.id}`);
                 
             switch (subcategory.id) {
                 case "reset_password":

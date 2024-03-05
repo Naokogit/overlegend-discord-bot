@@ -31,7 +31,7 @@ module.exports = {
             // console.log(categorySelected, ticketCategories[categorySelected]);
 
             if(ticketCategories[categorySelected]){
-                const modal = new ModalBuilder().setCustomId(`modalTicket_${categorySelected}`).setTitle(`createTicket_${categorySelected}`);
+                const modal = new ModalBuilder().setCustomId(`modalTicket_${categorySelected}`).setTitle(`${categorySelected}`);
 
                 const embed = new EmbedBuilder().setTitle('Seleziona una sotto categoria').setTimestamp().setColor(0x503519).setFooter({text:"OverLegend",iconURL: "https://i.imgur.com/IWbnKLl.png"});
 

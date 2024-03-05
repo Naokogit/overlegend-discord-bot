@@ -24,6 +24,7 @@ module.exports = {
         //     // }
         // }
 
+        /*
         if(interaction.isModalSubmit() && interaction.customId === 'modalTicket_gamemode') {
             
             var category = 'gamemode';
@@ -129,6 +130,7 @@ module.exports = {
                 .addFields({name: "Ticket aperto :white_check_mark: ", value: `<@${interaction.user.id}> consulta il ticket aperto in ${channel}`})
             await interaction.reply({embeds: [embedEphemeral], ephemeral: true});
         }
+        */
         if(interaction.isModalSubmit() && interaction.customId.includes('modalTicket')) {
 
             // category_sub-category
@@ -140,31 +142,103 @@ module.exports = {
             const userId = interaction.user.id;
 
             const embedEphemeral = new EmbedBuilder()   
-            .setColor(0x503519)
-            .setTimestamp()
-            .setFooter({text: "OverLegend", iconURL: "https://i.imgur.com/IWbnKLl.png"})
-
-            const data = await ticket.findOne({category: category, subcategory: subcategory,userId: userId, status: 'open'});
-
-            if(data){
+                .setColor(0x503519)
+                .setTimestamp()
+                .setFooter({text: "OverLegend", iconURL: "https://i.imgur.com/IWbnKLl.png"});
+                
+                const data = await ticket.findOne({category: category, subcategory: subcategory,userId: userId, status: 'open'});
+                
+                if(data){
+                embedEphemeral
+                .setDescription(`<@${interaction.user.id}> hai già un ticket della stessa categoria o della stessa sottocategoria in <#${data.channelId}>`)
+                    .setTitle("Errore nell'apertura del ticket ❌")
                 if(data.category === category){
-                    embedEphemeral
-                        .setDescription(`<@${interaction.user.id}> hai già un ticket della stessa categoria in <#${data.channelId}>`)
-                        .setTitle("Errore nell'apertura del ticket ❌")
                     await interaction.reply({embeds: [embedEphemeral], ephemeral: true });
                     return;
                 }
             }
 
-
+            var ticketName;
+            var ticketTitle;
+            var ticketPermissionOverwrites;
+            
             switch(category) {
                 case 'gamemode':
                     const nickname = interaction.fields.getTextInputValue('nickname');
                     const device = interaction.fields.getTextInputValue('device');
                     const topic = interaction.fields.getTextInputValue('topic');
                     const issue = interaction.fields.getTextInputValue('issue');
-                break;
-            }
+                    
+                    ticketName = `${interaction.user.username}-ticket`
+                    console.log(ticketCategories[category])
+                    ticketTitle = `${ticketCategories[category].label + " " + ticketCategories[category].emoji + subcategory ? " | " + subcategory : ""}`;
+                    
+                    ticketPermissionOverwrites = [
+                        {id: interaction.guild.id, deny: [PermissionsBitField.Flags.ViewChannel], },
+                        {id: interaction.user.id, id: ticketsRole, allow: [PermissionsBitField.Flags.ViewChannel],},
+                    ];
+                    
+                    break;
+                }
+                
+            console.log(`[DB] Creating a new ticket...`)
+            const channel = await interaction.guild.channels.create({
+                name: ticketName,
+                type: ChannelType.GuildText,
+                parent: ticketsCategory,
+                topic: `Utente che ha aperto il ticket: ${interaction.user.username}/${category}${subcategory ? "/" + subcategory + "/" : ""}${interaction.user.id}`,
+                permissionOverwrites: ticketPermissionOverwrites,
+            });
+            
+            await ticket.create({
+                userId: userId,
+                channelId: channel.id,
+                category: category,
+                topic: topic,
+                nickname: nickname,
+                device: device,
+                issue: issue,
+            });
+
+            const ticketEmbed = new EmbedBuilder()
+                .setTitle(`TICKET | ${ticketTitle}`)
+                .setDescription(`Grazie per aver contattato l'assistenza.
+                Descrivi il tuo problema e attendi una risposta dallo staff.
+                Ticket aperto da: <@${interaction.user.id}>`)
+                // .setThumbnail('https://i.imgur.com/IWbnKLl.png')
+                .setTimestamp()
+                .setColor(0x503519)
+                .setFooter({text:"Data di creazione",iconURL: "https://i.imgur.com/IWbnKLl.png"})
+            
+            if(nickname) ticketEmbed.addFields({ name: '👤 Nickname di Minecraft', value: `\`\`\`${nickname}\`\`\`` });
+            if(device) ticketEmbed.addFields({ name: '🖥 Piattaforma', value: `\`\`\`${device}\`\`\`` });
+            if(topic) ticketEmbed.addFields({ name: '✨ Topic principale', value: `\`\`\`${topic}\`\`\`` });
+            if(issue) ticketEmbed.addFields({ name: '🔧 Descrizione del problema', value: `\`\`\`${issue}\`\`\`` });
+                
+            const closeBtn = new ButtonBuilder()
+                .setEmoji('🔒')
+                .setLabel('Chiudi')
+                .setStyle(ButtonStyle.Danger)
+                .setCustomId('btnCloseTicket');
+                
+            const closeReasonBtn = new ButtonBuilder()
+                .setEmoji('🎫')
+                .setLabel('Chiudi con motivo')
+                .setStyle(ButtonStyle.Danger)
+                .setCustomId('btnCloseReasonTicket');
+
+            const row = new ActionRowBuilder().addComponents(closeBtn, closeReasonBtn);
+            
+            await channel.send({embeds: [embed], components: [row]});
+            await channel.send({content: `<@&${ticketsRole}>`}).delete().catch(err => {});
+            // msg.delete().catch(err =>{});
+
+            embedEphemeral
+                .setTitle(`TICKET APERTO | ${ticketTitle}`)
+                .setDescription('Hai aperto un ticket')
+            //.setDescription(`<@${interaction.user.id}> consulta il ticket aperto in ${channel}`)
+                .addFields({name: "Ticket aperto :white_check_mark: ", value: `<@${interaction.user.id}> consulta il ticket aperto in ${channel}`})
+            await interaction.reply({embeds: [embedEphemeral], ephemeral: true});
         }
     }
 }
