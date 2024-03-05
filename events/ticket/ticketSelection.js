@@ -3,7 +3,7 @@ const { Events, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder
 const { ticketsRole, debug } = require('../../configs/config.json');
 
 const { ticketCategories } = require('../../configs/tickets_category');
-const ticketSchema = require("../../schemas/ticketSchema");
+const { nicknameInput, deviceInput, issueInput, topicInput } = require("../../modules/modalInputModule");
 
 module.exports = {
     
@@ -13,101 +13,99 @@ module.exports = {
         if(interaction.customId === 'ticketCreateSelect'){
             
             const categorySelected = interaction.values[0];
-            // const categoryHandlers = {};        
 
-            // for(const category of Object.keys(ticketCategories)){
-            //     categoryHandlers[category] = eval("handler" + category.charAt(0).toUpperCase() + category.slice(1));
-            // }
+            if (!ticketCategories[categorySelected])
+                return;
 
-            // if(categoryHandlers[categorySelected]){
-                
-            //     const modal = new ModalBuilder()
-            //         .setCustomId(`modalTicket_${categorySelected}`)
-            //         .setTitle(`createTicket_${categorySelected}`);
-            
-            //     categoryHandlers[categorySelected](categorySelected, interaction);
-            
-            // }
-            // console.log(categorySelected, ticketCategories[categorySelected]);
+            const modal = new ModalBuilder()
+                .setCustomId(`modalTicket_${categorySelected}`)
+                .setTitle(`${categorySelected}`);
 
-            if(ticketCategories[categorySelected]){
-                const modal = new ModalBuilder().setCustomId(`modalTicket_${categorySelected}`).setTitle(`${categorySelected}`);
+            const embed = new EmbedBuilder().setTitle('Seleziona una sotto categoria').setTimestamp().setColor(0x503519).setFooter({text:"OverLegend",iconURL: "https://i.imgur.com/IWbnKLl.png"});
 
-                const embed = new EmbedBuilder().setTitle('Seleziona una sotto categoria').setTimestamp().setColor(0x503519).setFooter({text:"OverLegend",iconURL: "https://i.imgur.com/IWbnKLl.png"});
+            switch(categorySelected){
+                case 'gamemode':
 
-                switch(categorySelected){
-                    case 'gamemode':
-                        const nicknameInput = new TextInputBuilder().setCustomId('nickname').setLabel('Inserisci il tuo nickname sul gioco').setStyle(TextInputStyle.Short).setPlaceholder("Nickname sul server").setMinLength(3).setMaxLength(16).setRequired(true);	
+                    if(debug){
+                        nicknameInput.setValue("Naoko__");
+                        deviceInput.setValue("Java");
+                        topicInput.setValue("Lorem Ipsum");
+                        issueInput.setValue("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt");
+                    }
+                    
+                    console.log(nicknameInput);
+
+                    const _nicknameInput = new TextInputBuilder()
+                    .setCustomId("nickname")
+                    .setLabel("Inserisci il tuo nickname sul gioco")
+                    .setStyle(TextInputStyle.Short)
+                    .setPlaceholder("Nickname sul server")
+                    .setMinLength(3)
+                    .setMaxLength(16)
+                    .setRequired(true);
+
+
+                    console.log(_nicknameInput);
+
+                    console.log(_nicknameInput === nicknameInput);
+
+                    modal.addComponents(
+                        new ActionRowBuilder().addComponents(nicknameInput), 
+                        new ActionRowBuilder().addComponents(deviceInput),
+                        new ActionRowBuilder().addComponents(topicInput),
+                        new ActionRowBuilder().addComponents(issueInput),
+                        );
+                    await interaction.showModal(modal);
                         
-                        const deviceInput = new TextInputBuilder().setCustomId('device').setLabel('Su che piattaforma sei? (Java o Bedrock)').setStyle(TextInputStyle.Short).setPlaceholder("Java/Bedrock").setMinLength(4).setMaxLength(7).setRequired(true);		
-                        
-                        const topicInput = new TextInputBuilder().setCustomId('topic').setLabel('Topic principale del ticket').setStyle(TextInputStyle.Short).setPlaceholder("Segnalazione giocatore, bug").setMinLength(3).setMaxLength(100).setRequired(true);		
-                        
-                        const issueInput = new TextInputBuilder().setCustomId('issue').setLabel('Descrivi nel dettaglio la tua richiesta').setStyle(TextInputStyle.Paragraph).setPlaceholder("Descrizione della richiesta").setMinLength(10).setMaxLength(1024).setRequired(true);
-                        
-                        if(debug){
-                            nicknameInput.setValue("Naoko__");
-                            deviceInput.setValue("Java");
-                            topicInput.setValue("Lorem Ipsum");
-                            issueInput.setValue("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt");
-                        }
-                        
-                        modal.addComponents(
-                            new ActionRowBuilder().addComponents(nicknameInput), 
-                            new ActionRowBuilder().addComponents(deviceInput),
-                            new ActionRowBuilder().addComponents(topicInput),
-                            new ActionRowBuilder().addComponents(issueInput),
-                            );
-                        await interaction.showModal(modal);
-                            
-                        break;
-                    case 'account':
-                    case 'application':
-                        const row = new ActionRowBuilder();
-                        var desc = "";
+                    break;
+                case 'application':
+                case 'commerce':
+                case 'account':
 
-                        ticketCategories[categorySelected].subcategory.forEach((subcategory) =>{
-                            const subcategoryBtn = new ButtonBuilder()
-                                .setEmoji(subcategory.emoji)
-                                .setLabel(subcategory.label)
-                                .setStyle(ButtonStyle.Secondary)
-                                .setCustomId(`btnSubCategory_${subcategory.id}`);
-                            desc += `**${subcategory.emoji} ${subcategory.label}** - ${subcategory.text}\n`;
+                    const row = new ActionRowBuilder();
+                    var desc = "";
 
-                            row.addComponents(subcategoryBtn);
-                        });
-                        embed.setDescription(desc);
-                        
-                        await interaction.reply({embeds: [embed], components: [row], ephemeral: true});
-                        break;
-                }
-            }    
+                    ticketCategories[categorySelected].subcategory.forEach((subcategory) =>{
+                        const subcategoryBtn = new ButtonBuilder()
+                            .setEmoji(subcategory.emoji)
+                            .setLabel(subcategory.label)
+                            .setStyle(ButtonStyle.Secondary)
+                            .setCustomId(`btnSubCategory_${subcategory.id}`);
+                        desc += `**${subcategory.emoji} ${subcategory.label}** - ${subcategory.text}\n`;
+
+                        row.addComponents(subcategoryBtn);
+                    });
+                    embed.setDescription(desc);
+                    
+                    await interaction.reply({embeds: [embed], components: [row], ephemeral: true});
+                    break;
+            } 
         }
 
-        if(interaction.isButton() && interaction.customId === 'btn_ping_staff'){
+        // if(interaction.isButton() && interaction.customId === 'btn_ping_staff'){
 
-            const staffID = [
-                ticketsRole,
-            ];
+        //     const staffID = [
+        //         ticketsRole,
+        //     ];
     
-            const roleMention = staffID.map(id => `<@${id}>`).join(' ');
-            const messageContent = `${roleMention}`;
+        //     const roleMention = staffID.map(id => `<@${id}>`).join(' ');
+        //     const messageContent = `${roleMention}`;
     
-            const embed = new EmbedBuilder()
-                .setTitle(`Staff Pinged`)
-                .setDescription(`Lo staff è stato pingato, aspetta 2-4 ore`)
-                .setTimestamp()
-                .setFooter({text: `Staff pingato alle:`});
+        //     const embed = new EmbedBuilder()
+        //         .setTitle(`Staff Pinged`)
+        //         .setDescription(`Lo staff è stato pingato, aspetta 2-4 ore`)
+        //         .setTimestamp()
+        //         .setFooter({text: `Staff pingato alle:`});
     
-            await interaction.channel.send({
-                content: messageContent,
-                embeds: [embed]
-            })
-            await interaction.reply({
-                content: 'Hai pingato lo staff',
-                ephemeral: true
-            })
-        }
+        //     await interaction.channel.send({
+        //         content: messageContent,
+        //         embeds: [embed]
+        //     })
+        //     await interaction.reply({
+        //         content: 'Hai pingato lo staff',
+        //         ephemeral: true
+        //     })
+        // }
     }
 
 }
