@@ -15,7 +15,13 @@ const ticketSchema = new mongoose.Schema({
     device: {
         type: String
     },
+    premium: {
+        type: String
+    },
     category: {
+        type: String,
+    },
+    subcategory: {
         type: String,
     },
     topic: {

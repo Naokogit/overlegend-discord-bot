@@ -1,75 +1,89 @@
 const { Events, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, ChannelType, PermissionsBitField, EmbedBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 
-const { ticketsCategory, ticketsRole, debug } = require('../../configs/config.json');
+const { ticketsRole, debug } = require('../../configs/config.json');
+
+const { ticketCategories } = require('../../configs/tickets_category');
+const ticketSchema = require("../../schemas/ticketSchema");
 
 module.exports = {
+    
     name: Events.InteractionCreate,
     async execute(interaction, client) {
 
         if(interaction.customId === 'ticketCreateSelect'){
             
-            switch(interaction.values[0]){
-                case 'createTicket_gamemode':
-                    
-                    const modal = new ModalBuilder()
-                    .setCustomId('modalTicket_gamemode')
-                    .setTitle('createTicket_gamemode');
-                    
-                    const nicknameInput = new TextInputBuilder()
-                    .setCustomId('nickname')
-                    .setLabel('Inserisci il tuo nickname sul gioco')
-                    .setStyle(TextInputStyle.Short)
-                    .setPlaceholder("Nickname sul server")
-                    .setMinLength(3)
-                    .setMaxLength(16)
-                    .setRequired(true);	
-                    
-                    const deviceInput = new TextInputBuilder()
-                    .setCustomId('device')
-                    .setLabel('Su che piattaforma sei? (Java o Bedrock)')
-                    .setStyle(TextInputStyle.Short)
-                    .setPlaceholder("Java/Bedrock")
-                    .setMinLength(4)
-                    .setMaxLength(7)
-                    .setRequired(true);		
-                    
-                    const topicInput = new TextInputBuilder()
-                    .setCustomId('topic')
-                    .setLabel('Topic principale del ticket')
-                    .setStyle(TextInputStyle.Short)
-                    .setPlaceholder("Segnalazione giocatore, bug")
-                    .setMinLength(3)
-                    .setMaxLength(100)
-                    .setRequired(true);		
-                    
-                    const issueInput = new TextInputBuilder()
-                    .setCustomId('issue')
-                    .setLabel('Descrizione del problema')
-                    .setStyle(TextInputStyle.Paragraph)
-                    .setPlaceholder("Descrizione sintetica del problema, ogni dettaglio è importante")
-                    .setMinLength(10)
-                    .setMaxLength(500)
-                    .setRequired(true);
-                    
-                    if(debug){
-                        nicknameInput.setValue("Naoko__");
-                        deviceInput.setValue("Java");
-                        topicInput.setValue("Lorem Ipsum");
-                        issueInput.setValue("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt");
-                    }
-                    
-                    modal.addComponents(
-                        new ActionRowBuilder().addComponents(nicknameInput), 
-                        new ActionRowBuilder().addComponents(deviceInput),
-                        new ActionRowBuilder().addComponents(topicInput),
-                        new ActionRowBuilder().addComponents(issueInput),
-                        );
-                        await interaction.showModal(modal);
+            const categorySelected = interaction.values[0];
+            // const categoryHandlers = {};        
+
+            // for(const category of Object.keys(ticketCategories)){
+            //     categoryHandlers[category] = eval("handler" + category.charAt(0).toUpperCase() + category.slice(1));
+            // }
+
+            // if(categoryHandlers[categorySelected]){
+                
+            //     const modal = new ModalBuilder()
+            //         .setCustomId(`modalTicket_${categorySelected}`)
+            //         .setTitle(`createTicket_${categorySelected}`);
+            
+            //     categoryHandlers[categorySelected](categorySelected, interaction);
+            
+            // }
+            // console.log(categorySelected, ticketCategories[categorySelected]);
+
+            if(ticketCategories[categorySelected]){
+                const modal = new ModalBuilder().setCustomId(`modalTicket_${categorySelected}`).setTitle(`${categorySelected}`);
+
+                const embed = new EmbedBuilder().setTitle('Seleziona una sotto categoria').setTimestamp().setColor(0x503519).setFooter({text:"OverLegend",iconURL: "https://i.imgur.com/IWbnKLl.png"});
+
+                switch(categorySelected){
+                    case 'gamemode':
+                        const nicknameInput = new TextInputBuilder().setCustomId('nickname').setLabel('Inserisci il tuo nickname sul gioco').setStyle(TextInputStyle.Short).setPlaceholder("Nickname sul server").setMinLength(3).setMaxLength(16).setRequired(true);	
                         
+                        const deviceInput = new TextInputBuilder().setCustomId('device').setLabel('Su che piattaforma sei? (Java o Bedrock)').setStyle(TextInputStyle.Short).setPlaceholder("Java/Bedrock").setMinLength(4).setMaxLength(7).setRequired(true);		
+                        
+                        const topicInput = new TextInputBuilder().setCustomId('topic').setLabel('Topic principale del ticket').setStyle(TextInputStyle.Short).setPlaceholder("Segnalazione giocatore, bug").setMinLength(3).setMaxLength(100).setRequired(true);		
+                        
+                        const issueInput = new TextInputBuilder().setCustomId('issue').setLabel('Descrivi nel dettaglio la tua richiesta').setStyle(TextInputStyle.Paragraph).setPlaceholder("Descrizione della richiesta").setMinLength(10).setMaxLength(1024).setRequired(true);
+                        
+                        if(debug){
+                            nicknameInput.setValue("Naoko__");
+                            deviceInput.setValue("Java");
+                            topicInput.setValue("Lorem Ipsum");
+                            issueInput.setValue("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt");
+                        }
+                        
+                        modal.addComponents(
+                            new ActionRowBuilder().addComponents(nicknameInput), 
+                            new ActionRowBuilder().addComponents(deviceInput),
+                            new ActionRowBuilder().addComponents(topicInput),
+                            new ActionRowBuilder().addComponents(issueInput),
+                            );
+                        await interaction.showModal(modal);
+                            
                         break;
-                    }
+                    case 'account':
+                    case 'application':
+                        const row = new ActionRowBuilder();
+                        var desc = "";
+
+                        ticketCategories[categorySelected].subcategory.forEach((subcategory) =>{
+                            const subcategoryBtn = new ButtonBuilder()
+                                .setEmoji(subcategory.emoji)
+                                .setLabel(subcategory.label)
+                                .setStyle(ButtonStyle.Secondary)
+                                .setCustomId(`btnSubCategory_${subcategory.id}`);
+                            desc += `**${subcategory.emoji} ${subcategory.label}** - ${subcategory.text}\n`;
+
+                            row.addComponents(subcategoryBtn);
+                        });
+                        embed.setDescription(desc);
+                        
+                        await interaction.reply({embeds: [embed], components: [row], ephemeral: true});
+                        break;
                 }
-        
+            }    
+        }
+
         if(interaction.isButton() && interaction.customId === 'btn_ping_staff'){
 
             const staffID = [

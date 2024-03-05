@@ -1,30 +1,74 @@
-[   
-    {
-        "label": "Supporto Modalità",
-        "emoji": "🕹",
-        "long_description": "Per richieste specifiche di supporto per una modalità del Network o per segnalazioni di giocatori o bug",
-        "description": "Supporto per giochi, giocatori e bug.",
-        "value": "createTicket_gamemode"
-    },
-    {
-        "label": "Supporto Account",
-        "emoji": "🔑",
-        "long_description": "Per aiuto nella gestione del proprio account, richiedere trasferimenti, reset password, etc.",
-        "description": "Aiuto gestione, trasferimenti, reset password.",
-        "value": "createTicket_account"
-    },
-    {
-        "label": "Supporto Commerciale",
-        "emoji": "💸",
-        "long_description": "Per richiedere supporto generale negli acquisti, recuperare un pacchetto VIP, oppure richiedere una collaborazione",
-        "description": "Supporto acquisti, VIP, collaborazioni.",
-        "value": "createTicket_commercial"
-    },
-    {
-        "label": "Candidature",
-        "emoji": "📝",
-        "long_description": "Per richieste di arruolamento nel nostro Staff.",
-        "description": "Per richieste di arruolamento nel nostro Staff.",
-        "value": "createTicket_application"
+{
+    "ticketCategories": {
+        "gamemode": {
+            "label": "Supporto Modalità",
+            "emoji": "🕹",
+            "long_description": "Per richieste specifiche di supporto per una modalità del Network o per segnalazioni di giocatori o bug",
+            "description": "Supporto per giochi, giocatori e bug."
+        },
+        "account": {
+            "label": "Supporto Account",
+            "emoji": "🔑",
+            "long_description": "Per aiuto nella gestione del proprio account, richiedere trasferimenti, reset password, etc.",
+            "description": "Aiuto gestione, trasferimenti, reset password.",
+            "subcategory": [
+                {
+                    "label": "Richiesta Reset Password",
+                    "emoji": "⚙",
+                    "text": "Richiesta Reset Password",
+                    "id": "reset_password"
+                },
+                {
+                    "label": "Trasferimento Account",
+                    "emoji": "🔀",
+                    "text": "Richiedi un trasferimento account (SP -> PREMIUM, PREMIUM -> PREMIUM)",
+                    "id": "transfer_account"
+                },
+                {
+                    "label": "Account secondari",
+                    "emoji": "👨‍👨‍👦",
+                    "text": "Richiedi verifica dell'IP [Necessario fratelli/sorelle]",
+                    "id": "secondary_account"
+                },
+                {
+                    "label": "Problemi al Login/Register",
+                    "emoji": "🔀",
+                    "text": "Problemi relativi al Login o alla Registrazione",
+                    "id": "login_problems"
+                }
+            ]
+        },
+        "commercial": {
+            "label": "Supporto Commerciale",
+            "emoji": "💸",
+            "long_description": "Per richiedere supporto generale negli acquisti, recuperare un pacchetto VIP, oppure richiedere una collaborazione",
+            "description": "Supporto acquisti, VIP, collaborazioni."
+        },
+        "application": {
+            "label": "Candidature",
+            "emoji": "📝",
+            "long_description": "Per richieste di arruolamento nel nostro Staff.",
+            "description": "Per richieste di arruolamento nel nostro Staff.",
+            "subcategory": [
+                {
+                    "label": "Candidatura Sviluppatore",
+                    "emoji": "👜",
+                    "text": "Apri il ticket per candidarti come Sviluppatore",
+                    "id": "developer"
+                },
+                {
+                    "label": "Candidatura Builder",
+                    "emoji": "👜",
+                    "text": "Apri il ticket per candidarti come Builder",
+                    "id": "builder"
+                },
+                {
+                    "label": "Candidatura Helper",
+                    "emoji": "👜",
+                    "text": "Apri il ticket per candidarti come Helper",
+                    "id": "helper"
+                }
+            ]
+        }
     }
-]
+}

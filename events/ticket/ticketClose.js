@@ -1,4 +1,4 @@
-const { Events, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, ChannelType, PermissionsBitField, EmbedBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, Client} = require("discord.js");
+const { Events, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, EmbedBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, Client} = require("discord.js");
 const { createTranscript } = require('discord-html-transcripts');
 const { ticketsCategory, ticketsRole, ticketsDeposit } = require('../../configs/config.json');
 
@@ -22,19 +22,20 @@ module.exports = {
 
                 const user = getTicketCacheInformation(interaction);
 
-                const result = await ticket.updateOne({userId: user.userId, status: "open", category: user.category}, {$set: {closingReason: reason}});
-                console.log("Updating closingReason...", result);
+                cosnole.log(user);
+                //const result = await ticket.updateOne({userId: user.userId, status: "open", category: user.category}, {$set: {closingReason: reason}});
+                //console.log("Updating closingReason...", result);
             }
 
-            const confirmCloseBtn = new ButtonBuilder()
-            .setEmoji('‼')
-            .setLabel('Conferma')
-            .setStyle(ButtonStyle.Danger)
-            .setCustomId('btnConfirmClose');
+            // const confirmCloseBtn = new ButtonBuilder()
+            // .setEmoji('‼')
+            // .setLabel('Conferma')
+            // .setStyle(ButtonStyle.Danger)
+            // .setCustomId('btnConfirmClose');
             
-            const row = new ActionRowBuilder().addComponents(confirmCloseBtn);
+            // const row = new ActionRowBuilder().addComponents(confirmCloseBtn);
                 
-            await interaction.reply({embeds: [embedConfirmDelete], components: [row], fetchReply: true});
+            // await interaction.reply({embeds: [embedConfirmDelete], components: [row], fetchReply: true});
         }
         if(interaction.isButton() && interaction.customId === 'btnConfirmClose'){
             
