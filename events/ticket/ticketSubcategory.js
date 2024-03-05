@@ -27,7 +27,6 @@ module.exports = {
 
             const modal = new ModalBuilder()
                 .setCustomId(`modalTicket_${category}-${subcategory.id}`)
-                // .setTitle(`${subcategory.label}`);
                 .setTitle(`${category} | ${subcategory.id}`);
                 
             switch (subcategory.id) {

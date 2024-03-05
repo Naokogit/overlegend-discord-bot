@@ -2,7 +2,6 @@ const fs = require('fs');
 const path = require('path');
 let fileNames = [];
 
-
 function getAllFiles(directory) {
 
   const files = fs.readdirSync(directory, { withFileTypes: true });
