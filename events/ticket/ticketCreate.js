@@ -6,6 +6,8 @@ const ticket = require('../../schemas/ticketSchema');
 const { ticketCategories } = require('../../configs/tickets_category.json');
 const { ticketPermissionAdmin, ticketPermissionDefault } = require('../../modules/permissionModule');
 
+const { primaryColor, logoIMG } = require('../../configs/config.json');
+
 module.exports = {
     name: Events.InteractionCreate,
 
@@ -22,9 +24,9 @@ module.exports = {
             const userId = interaction.user.id;
 
             const embedEphemeral = new EmbedBuilder()   
-            .setColor(0x503519)
-            .setTimestamp()
-            .setFooter({text: "OverLegend", iconURL: "https://i.imgur.com/IWbnKLl.png"});
+                .setColor(primaryColor)
+                .setTimestamp()
+                .setFooter({text: "OverLegend", iconURL: logoIMG});
             
             const data = await ticket.findOne({category: category, subcategory: subcategory, userId: userId, status: 'open'});
             
@@ -97,8 +99,8 @@ module.exports = {
                 Ticket aperto da: <@${interaction.user.id}>`)
                 // .setThumbnail('https://i.imgur.com/IWbnKLl.png')
                 .setTimestamp()
-                .setColor(0x503519)
-                .setFooter({text:"Data di creazione",iconURL: "https://i.imgur.com/IWbnKLl.png"})
+                .setColor(primaryColor)
+                .setFooter({ text: "Data di creazione", iconURL: logoIMG });
             
             if(ticketProperties.nickname) ticketEmbed.addFields({ name: '👤 Nickname di Minecraft', value: `\`\`\`${ticketProperties.nickname}\`\`\`` });
             if(ticketProperties.device) ticketEmbed.addFields({ name: '🖥 Piattaforma', value: `\`\`\`${ticketProperties.device}\`\`\`` });

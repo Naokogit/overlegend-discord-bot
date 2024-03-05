@@ -8,5 +8,11 @@
     
     "adminRole": "846789471416483840",
     
+    "primaryColor": "0x503519",
+    "secondaryColor": "0x503519",
+    "logoIMG": "https://i.imgur.com/IWbnKLl.png",
+
+    "ticketIMG": "https://images-ext-1.discordapp.net/external/xDmWfZQnKepl4YtOXjKymdzkbO6mecZuO54ji85CjJ4/https/imgur.com/u5w5CQr.png?format=webp&quality=lossless&width=1216&height=111",
+
     "debug": true
 }

@@ -1,6 +1,7 @@
 const { SlashCommandBuilder, PermissionFlagsBits, ChannelType, CommandInteraction, ActionRowBuilder, ButtonBuilder, EmbedBuilder, ButtonStyle, ChatInputCommandInteraction, StringSelectMenuBuilder, } = require('discord.js');
 
 const { ticketCategories } = require('../../configs/tickets_category.json');
+const { primaryColor, ticketIMG } = require('../../configs/config.json');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -45,7 +46,7 @@ module.exports = {
                 const row = new ActionRowBuilder().addComponents(select)
                 
                 const ticket_embed = new EmbedBuilder()
-                    .setColor(0x503519)
+                    .setColor(primaryColor)
                     .setTitle('SISTEMA DI SUPPORTO <:ol:1194007647582699590>')
                     .setDescription(`
                     Selezionando una delle opzioni qua sotto potrai
@@ -54,7 +55,7 @@ module.exports = {
                     ${desc}
                     **⚠️ Non abusare del sistema dei ticket aprendone a vuoto. Può comportare una sospensione o un warn.**
                     `)
-                    .setImage('https://images-ext-1.discordapp.net/external/xDmWfZQnKepl4YtOXjKymdzkbO6mecZuO54ji85CjJ4/https/imgur.com/u5w5CQr.png?format=webp&quality=lossless&width=1216&height=111')  
+                    .setImage(ticketIMG);
                     // .setFooter({text: "OverLegend • Sistema di supporto ticketing", iconURL: "https://i.imgur.com/IWbnKLl.png"})
                 
                 await channel_interaction.send({embeds: [ticket_embed], components: [row]});
