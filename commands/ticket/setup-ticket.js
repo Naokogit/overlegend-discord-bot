@@ -1,19 +1,28 @@
-const { SlashCommandBuilder, PermissionFlagsBits, ChannelType, CommandInteraction, ActionRowBuilder, ButtonBuilder, EmbedBuilder, ButtonStyle, ChatInputCommandInteraction, StringSelectMenuBuilder, } = require('discord.js');
+const { SlashCommandBuilder, PermissionsBitField, ChannelType, ActionRowBuilder, ButtonBuilder, EmbedBuilder, ButtonStyle, ChatInputCommandInteraction, StringSelectMenuBuilder, } = require('discord.js');
 
 const { ticketCategories } = require('../../configs/tickets_category.json');
-const { primaryColor, ticketIMG } = require('../../configs/config.json');
+const { primaryColor, ticketIMG, ticketsRole } = require('../../configs/config.json');
+
+const ticketCommand = new SlashCommandBuilder()
+    .setName('ticket')
+    .setDescription('ticket')
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('ticket')
         .setDescription('ticket')
-        .setDefaultMemberPermissions(PermissionFlagsBits.Administrator)
-        .addSubcommand(command => command.setName('setup').setDescription('Setup ticket').addChannelOption(option => 
-            option.setName('channel')
+        .addSubcommand(command => command.setName('setup').setDescription('Setup ticket')
+            .addChannelOption(option => 
+                option.setName('channel')
+                    .setRequired(true)
+                    .setDescription('Specifica canale')
+                    .addChannelTypes(ChannelType.GuildText),
+            ))
+        .addSubcommand(command => command.setName('addmember').setDescription('Aggiungi un membro al ticket').addUserOption(option => 
+            option.setName('user')
                 .setRequired(true)
-                .setDescription('Specifica canale')
-                .addChannelTypes(ChannelType.GuildText),)
-
+                .setDescription("Specifica l'utente ")
+            )
     ),
     /**
      * 
@@ -25,7 +34,13 @@ module.exports = {
 
         switch(sub){
             case 'setup':
-                const channel = interaction.options.getChannel('channel');
+
+                if(!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)){
+                    await interaction.reply({content: '❌ Non puoi effettuare questa azione', ephemeral: true});
+                    return;
+                }
+
+                var channel = interaction.options.getChannel('channel');
                 const channel_interaction = interaction.client.channels.cache.get(channel.id);
 
                 const select = new StringSelectMenuBuilder()
@@ -60,6 +75,27 @@ module.exports = {
                 
                 await channel_interaction.send({embeds: [ticket_embed], components: [row]});
                 await interaction.reply({content: 'Setup ticket effettuato', ephemeral: true});
+            break;
+            case "addmember":
+                console.log(interaction.member.roles.cache.has(ticketsRole));
+                if(!interaction.member.roles.cache.has(ticketsRole)) {
+                    await interaction.reply({content: `❌ Non puoi effettuare questa azione <@${ticketRole}>`, ephemeral: true});
+                    return;
+                }
+
+                const user = interaction.options.getUser('user');
+
+
+                var channel = interaction.client.channels.cache.get(interaction.channelId);
+                
+                if (!channel.permissionsFor(user).has(PermissionsBitField.Flags.ViewChannel)) {
+                    await channel.permissionOverwrites.edit(user, { ViewChannel: true });
+                    await interaction.reply({content:`Granted permission for ${user.tag} to view ${channel.name}`, ephemeral: true});
+                    return;
+                }
+                await interaction.reply({content: `${user.tag} already has permission to view ${channel.name}`, ephemeral: true});
+
+                // await interaction.reply({content: 'done', ephemeral: true});
         }
     }
 }
