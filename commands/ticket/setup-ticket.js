@@ -1,7 +1,7 @@
-const { SlashCommandBuilder, PermissionsBitField, ChannelType, ActionRowBuilder, ButtonBuilder, EmbedBuilder, ButtonStyle, ChatInputCommandInteraction, StringSelectMenuBuilder, } = require('discord.js');
+const { SlashCommandBuilder, PermissionsBitField, ChannelType, ActionRowBuilder, ButtonBuilder, EmbedBuilder, ButtonStyle, ChatInputCommandInteraction, StringSelectMenuBuilder, Embed, } = require('discord.js');
 
 const { ticketCategories } = require('../../configs/tickets_category.json');
-const { primaryColor, ticketIMG, ticketsRole } = require('../../configs/config.json');
+const { primaryColor, ticketIMG, ticketsRole, logoIMG } = require('../../configs/config.json');
 
 const ticketCommand = new SlashCommandBuilder()
     .setName('ticket')
@@ -19,6 +19,11 @@ module.exports = {
                     .addChannelTypes(ChannelType.GuildText),
             ))
         .addSubcommand(command => command.setName('addmember').setDescription('Aggiungi un membro al ticket').addUserOption(option => 
+            option.setName('user')
+                .setRequired(true)
+                .setDescription("Specifica l'utente ")
+            ))
+        .addSubcommand(command => command.setName('removemember').setDescription('Rimovi un membro al ticket').addUserOption(option => 
             option.setName('user')
                 .setRequired(true)
                 .setDescription("Specifica l'utente ")
@@ -77,25 +82,54 @@ module.exports = {
                 await interaction.reply({content: 'Setup ticket effettuato', ephemeral: true});
             break;
             case "addmember":
-                console.log(interaction.member.roles.cache.has(ticketsRole));
-                if(!interaction.member.roles.cache.has(ticketsRole)) {
-                    await interaction.reply({content: `❌ Non puoi effettuare questa azione <@${ticketRole}>`, ephemeral: true});
+                if (!interaction.member.roles.cache.has(ticketsRole)) {
+                    await interaction.reply({ content: `❌ Non puoi effettuare questa azione`, ephemeral: true });
                     return;
                 }
 
-                const user = interaction.options.getUser('user');
-
-
+                var user = interaction.options.getUser('user');
                 var channel = interaction.client.channels.cache.get(interaction.channelId);
                 
+                var embed = new EmbedBuilder()
+                    .setTimestamp()
+                    .setColor(Number(primaryColor))
+                    .setFooter({ text: "OverLegend", iconURL: logoIMG });
                 if (!channel.permissionsFor(user).has(PermissionsBitField.Flags.ViewChannel)) {
                     await channel.permissionOverwrites.edit(user, { ViewChannel: true });
-                    await interaction.reply({content:`Granted permission for ${user.tag} to view ${channel.name}`, ephemeral: true});
+                        embed.setTitle(`➕ Aggiunto nuovo membro al ticket`)
+                        .setDescription(`È stato aggiunto <@${user.id}> al ticket <#${channel.id}>`)
+                    await interaction.reply({ embeds: [embed] });
                     return;
                 }
-                await interaction.reply({content: `${user.tag} already has permission to view ${channel.name}`, ephemeral: true});
+                embed.setTitle("❌ Questo membro è già presente")
+                .setDescription(`<@${user.id}> è già presente all'interno del ticket <#${channel.id}>`)
+                
+                await interaction.reply({ embeds: [embed], ephemeral: true });
+                break;
+            case "removemember":
+                if (!interaction.member.roles.cache.has(ticketsRole)) {
+                    await interaction.reply({ content: `❌ Non puoi effettuare questa azione`, ephemeral: true });
+                    return;
+                }
+                var user = interaction.options.getUser('user');
+                var channel = interaction.client.channels.cache.get(interaction.channelId);
 
-                // await interaction.reply({content: 'done', ephemeral: true});
+                var embed = new EmbedBuilder()
+                .setTimestamp()
+                .setColor(Number(primaryColor))
+                .setFooter({ text: "OverLegend", iconURL: logoIMG });
+
+                if (channel.permissionsFor(user).has(PermissionsBitField.Flags.ViewChannel)) {
+                    embed.setTitle(`➖ Rimosso membro dal ticket`)
+                    .setDescription(`È stato rimosso <@${user.id}> dal ticket <#${channel.id}>`)
+                    await channel.permissionOverwrites.edit(user, { ViewChannel: false });
+                    await interaction.reply({ embeds: [embed] });
+                    return;
+                }
+                embed.setTitle("❌ Questo membro non è presente")
+                .setDescription(`<@${user.id}> non è presente all'interno del ticket <#${channel.id}>`)
+                
+                await interaction.reply({ embeds: [embed], ephemeral: true });
         }
     }
 }
