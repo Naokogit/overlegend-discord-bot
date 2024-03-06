@@ -130,8 +130,13 @@ module.exports = {
                 .setLabel('Chiudi con motivo')
                 .setStyle(ButtonStyle.Danger)
                 .setCustomId('btnCloseReasonTicket');
-
-            const row = new ActionRowBuilder().addComponents(closeBtn, closeReasonBtn);
+                
+            const claimTicketBtn = new ButtonBuilder()
+                .setEmoji('👋')
+                .setLabel('Rivendica')
+                .setStyle(ButtonStyle.Success)
+                .setCustomId('btnClaimTicket');
+            const row = new ActionRowBuilder().addComponents(closeBtn, closeReasonBtn, claimTicketBtn);
             
             await channel.send({embeds: [ticketEmbed], components: [row]});
             const msg = await channel.send({ content: `<@&${ticketsRole}>` });

@@ -97,7 +97,7 @@ module.exports = {
                 if (!channel.permissionsFor(user).has(PermissionsBitField.Flags.ViewChannel)) {
                     await channel.permissionOverwrites.edit(user, { ViewChannel: true });
                         embed.setTitle(`➕ Aggiunto nuovo membro al ticket`)
-                        .setDescription(`È stato aggiunto <@${user.id}> al ticket <#${channel.id}>`)
+                        .setDescription(`<@${user.id}> è stato aggiunto al ticket <#${channel.id}>`)
                     await interaction.reply({ embeds: [embed] });
                     return;
                 }
@@ -121,7 +121,7 @@ module.exports = {
 
                 if (channel.permissionsFor(user).has(PermissionsBitField.Flags.ViewChannel)) {
                     embed.setTitle(`➖ Rimosso membro dal ticket`)
-                    .setDescription(`È stato rimosso <@${user.id}> dal ticket <#${channel.id}>`)
+                    .setDescription(`<@${user.id}> è stato rimosso dal ticket <#${channel.id}>`)
                     await channel.permissionOverwrites.edit(user, { ViewChannel: false });
                     await interaction.reply({ embeds: [embed] });
                     return;
