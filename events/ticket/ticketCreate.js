@@ -1,12 +1,10 @@
 const { Events, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, ChannelType, PermissionsBitField, EmbedBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, Client, Embed, shouldUseGlobalFetchAndWebSocket} = require("discord.js");
 
-const { ticketsCategory, ticketsRole, adminRole } = require('../../configs/config.json');
+const { ticketsCategory, ticketsRole, adminRole, primaryColor, logoIMG } = require('../../configs/config.json');
 const ticket = require('../../schemas/ticketSchema');
 
 const { ticketCategories } = require('../../configs/tickets_category.json');
 const { ticketPermissionAdmin, ticketPermissionDefault } = require('../../modules/permissionModule');
-
-const { primaryColor, logoIMG } = require('../../configs/config.json');
 
 module.exports = {
     name: Events.InteractionCreate,
@@ -108,15 +106,15 @@ module.exports = {
                 .setColor(Number(primaryColor))
                 .setFooter({ text: "Data di creazione", iconURL: logoIMG });
             
-            if(ticketProperties.nickname) ticketEmbed.addFields({ name: '👤 Nickname di Minecraft', value: `\`\`\`${ticketProperties.nickname}\`\`\`` });
-            if(ticketProperties.device) ticketEmbed.addFields({ name: '🖥 Piattaforma', value: `\`\`\`${ticketProperties.device}\`\`\`` });
-            if(ticketProperties.premium) ticketEmbed.addFields({ name: '🧊 Minecraft Premium', value: `\`\`\`${ticketProperties.premium}\`\`\`` });
+            if (ticketProperties.nickname) ticketEmbed.addFields({ name: '👤 Nickname di Minecraft', value: `\`\`\`${ticketProperties.nickname}\`\`\`` });
+            if (ticketProperties.device) ticketEmbed.addFields({ name: '🖥 Piattaforma', value: `\`\`\`${ticketProperties.device}\`\`\`` });
+            if (ticketProperties.premium) ticketEmbed.addFields({ name: '🧊 Minecraft Premium', value: `\`\`\`${ticketProperties.premium}\`\`\`` });
             if (ticketProperties.date) ticketEmbed.addFields({ name: '📆 Disponibilità orario', value: `\`\`\`${ticketProperties.date}\`\`\`` });
             if (ticketProperties.devrole) ticketEmbed.addFields({ name: '⚒️ Ruolo desiderato', value: `\`\`\`${ticketProperties.devrole}\`\`\`` });
             if (ticketProperties.newaccount) ticketEmbed.addFields({ name: '👤 Nuovo account', value: `\`\`\`${ticketProperties.newaccount}\`\`\`` });
             if (ticketProperties.secondaccount) ticketEmbed.addFields({ name: '👤 Account secondario', value: `\`\`\`${ticketProperties.secondaccount}\`\`\`` });
-            if(ticketProperties.topic) ticketEmbed.addFields({ name: '✨ Topic principale', value: `\`\`\`${ticketProperties.topic}\`\`\`` });
-            if(ticketProperties.issue) ticketEmbed.addFields({ name: '🔧 Descrizione del problema', value: `\`\`\`${ticketProperties.issue}\`\`\`` });
+            if (ticketProperties.topic) ticketEmbed.addFields({ name: '✨ Topic principale', value: `\`\`\`${ticketProperties.topic}\`\`\`` });
+            if (ticketProperties.issue) ticketEmbed.addFields({ name: '🔧 Descrizione del problema', value: `\`\`\`${ticketProperties.issue}\`\`\`` });
 
 
             const closeBtn = new ButtonBuilder()
@@ -145,7 +143,7 @@ module.exports = {
             embedEphemeral
                 .setTitle(`TICKET APERTO | ${ticketTitle}`)
                 .setDescription('Hai aperto un ticket')
-                .addFields({name: "Ticket aperto :white_check_mark: ", value: `<@${interaction.user.id}> consulta il ticket aperto in ${channel}`})
+                .addFields({ name: "Ticket aperto :white_check_mark: ", value: `<@${interaction.user.id}> consulta il ticket aperto in ${channel}` });
             await interaction.reply({embeds: [embedEphemeral], ephemeral: true});
         }
     }

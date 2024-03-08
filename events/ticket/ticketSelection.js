@@ -1,6 +1,6 @@
 const { Events, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, ChannelType, PermissionsBitField, EmbedBuilder, ButtonBuilder, ButtonStyle} = require("discord.js");
 
-const { ticketsRole, debug } = require('../../configs/config.json');
+const { ticketsRole, debug, primaryColor, logoIMG } = require('../../configs/config.json');
 
 const { ticketCategories } = require('../../configs/tickets_category');
 const { nicknameInput, deviceInput, issueInput, topicInput } = require("../../modules/modalInputModule");
@@ -21,7 +21,7 @@ module.exports = {
                 .setCustomId(`modalTicket_${categorySelected}`)
                 .setTitle(`${categorySelected}`);
 
-            const embed = new EmbedBuilder().setTitle('Seleziona una sotto categoria').setTimestamp().setColor(0x503519).setFooter({text:"OverLegend",iconURL: "https://i.imgur.com/IWbnKLl.png"});
+            const embed = new EmbedBuilder().setTitle('Seleziona una sotto categoria').setTimestamp().setColor(Number(primaryColor)).setFooter({text:"OverLegend",iconURL: logoIMG});
 
             switch(categorySelected){
                 case 'gamemode':
