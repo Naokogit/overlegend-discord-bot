@@ -56,6 +56,9 @@ const ticketSchema = new mongoose.Schema({
     },
     closingReason: {
         type: String,
+    },
+    addedUsers: {
+        type: [String],
     }
 });
 

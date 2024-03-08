@@ -2,6 +2,8 @@ const { SlashCommandBuilder, PermissionsBitField, ChannelType, ActionRowBuilder,
 
 const { ticketCategories } = require('../../configs/tickets_category.json');
 const { primaryColor, ticketIMG, ticketsRole, logoIMG } = require('../../configs/config.json');
+const ticket = require('../../schemas/ticketSchema');
+const getTicketCacheInformation = require('../../utils/getTicketCacheInformation');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -91,13 +93,27 @@ module.exports = {
                     .setColor(Number(primaryColor))
                     .setFooter({ text: "OverLegend", iconURL: logoIMG });
                 if (!channel.permissionsFor(user).has(PermissionsBitField.Flags.ViewChannel)) {
-                    await channel.permissionOverwrites.edit(user, {
-                        ViewChannel: true,
-                        ReadMessageHistory: true,
-                    });
-                        embed.setTitle(`➕ Aggiunto nuovo membro al ticket`)
+                    
+                    embed.setTitle(`➕ Aggiunto nuovo membro al ticket`)
                         .setDescription(`<@${user.id}> è stato aggiunto al ticket <#${channel.id}>`)
-                    await interaction.reply({ embeds: [embed] });
+                    const ticketInformation = getTicketCacheInformation(interaction);
+                    
+                    const query = {userId: ticketInformation.userId, category: ticketInformation.category, status: "open"}
+                    
+                    var addedUsers = [];
+                    const data = await ticket.findOne(query);
+                    
+                    addedUsers = data?.addedUsers;
+                    addedUsers.push(user.id);
+                    
+                    await ticket.updateOne(query, { $set: { addedUsers: addedUsers } }).then(async function () {
+                        await channel.permissionOverwrites.edit(user, {
+                            ViewChannel: true,
+                            ReadMessageHistory: true,
+                        });
+                        await interaction.reply({ embeds: [embed] });
+                    });
+                    
                     return;
                 }
                 embed.setTitle("❌ Questo membro è già presente")
@@ -120,9 +136,22 @@ module.exports = {
 
                 if (channel.permissionsFor(user).has(PermissionsBitField.Flags.ViewChannel)) {
                     embed.setTitle(`➖ Rimosso membro dal ticket`)
-                    .setDescription(`<@${user.id}> è stato rimosso dal ticket <#${channel.id}>`)
-                    await channel.permissionOverwrites.edit(user, { ViewChannel: false });
-                    await interaction.reply({ embeds: [embed] });
+                        .setDescription(`<@${user.id}> è stato rimosso dal ticket <#${channel.id}>`)
+                    
+                    const ticketInformation = getTicketCacheInformation(interaction);
+                
+                    const query = {userId: ticketInformation.userId, category: ticketInformation.category, status: "open"}
+                    
+                    var addedUsers = []
+                    const data = await ticket.findOne(query);
+                    addedUsers = data?.addedUsers;
+
+                    addedUsers.splice(addedUsers.indexOf(user.id), 1)
+
+                    await ticket.updateOne(query, { $set: { addedUsers: addedUsers } }).then(async function () {
+                        await channel.permissionOverwrites.edit(user, { ViewChannel: false });
+                        await interaction.reply({ embeds: [embed] });
+                    });
                     return;
                 }
                 embed.setTitle("❌ Questo membro non è presente")
