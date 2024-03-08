@@ -1,5 +1,6 @@
 const { Client, Events, ActivityType } = require('discord.js');
 
+const { logoIMG, primaryColor } = require('../configs/config.json');
 
 const mongoose = require('mongoose');
 const mongoURL = process.env.MONGO_URL;
@@ -15,7 +16,6 @@ module.exports = {
 	async execute(client) {
 		console.log(`Bot ready! Logged in as ${client.user.tag}`);
 		
-		client.user.set
 		client.user.setActivity({
 			name: 'OverLegend',
 			type: ActivityType.Playing,
