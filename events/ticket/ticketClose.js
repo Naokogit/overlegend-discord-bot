@@ -74,14 +74,14 @@ module.exports = {
             await interaction.channel.delete().catch(err => { });
             
             const dmEmbed = new EmbedBuilder()
-                .setTitle('Ticket chiuso')
+                .setTitle('Ticket Chiuso')
                 .setDescription(`Il ticket che hai aperto in precedenza è stato chiuso.\nGrazie per averci contattato.`)
                 .setColor(Number(primaryColor))
                 .setThumbnail(logoIMG)
                 .setTimestamp()
                 .setFooter({text: "OverLegend", iconURL: logoIMG})
                 .addFields(
-                    { name: "📃 Motivo:", value: `${reason ? `\`\`\`${reason}\`\`\`` : "\`\`\`Nessun motivo specificato\`\`\`"}` },
+                    { name: "📃 Motivo di chiusura:", value: `${reason ? `\`\`\`${reason}\`\`\`` : "\`\`\`Nessun motivo specificato\`\`\`"}` },
                     { name: "⌚ Aperto il:", value: `<t:${date}>`, inline: true },
                     { name: "🔒 Chiuso da:", value: `<@${interaction.user.id}>`, inline: true },
                 );
@@ -143,7 +143,7 @@ module.exports = {
                 modal.addComponents(new ActionRowBuilder().addComponents(topicInput));
                 await interaction.showModal(modal);
             }else{
-                interaction.reply({content: "Non disponi di abbastanza privilegi.", ephemeral: true});
+                await interaction.reply({content: "Non disponi di abbastanza privilegi.", ephemeral: true});
             }
         }
     }

@@ -8,8 +8,9 @@ module.exports = {
     name: Events.GuildMemberAdd,
 
     async execute(member) {
-    
-        
+      
+        if (member.user.bot) return;
+
         const random = frasi[Math.floor(Math.random() * frasi.length)]
 
         const embed = new EmbedBuilder()

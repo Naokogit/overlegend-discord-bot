@@ -1,0 +1,40 @@
+{
+
+    "roles": {
+        "news": {
+            "label": "News",
+            "description": "News del server",
+            "emoji": "📰",
+            "id": "1215776735317196921",
+            "id_channel": "1215781034935980123"
+        },
+        "changelog": {
+            "label": "Changelog",
+            "description": "Changelog del server",
+            "emoji": "📣",
+            "id": "1215776765855797278",
+            "id_channel": "1215781212929396756"
+        },
+        "eventi-contest": {
+            "label": "Eventi Contest",
+            "description": "Eventi contest del server",
+            "emoji": "🔥",
+            "id": "1215776801603846225",
+            "id_channel": "1215781236866547722"
+        },
+        "spoiler": {
+            "label": "Spoiler",
+            "description": "Spoiler del server",
+            "emoji": "✨",
+            "id": "1215776793295065138",
+            "id_channel": "1215781254675431584"
+        },
+        "sondaggi": {
+            "label": "Sondaggi",
+            "description": "Sondaggi del server",
+            "emoji": "📅",
+            "id": "1215776851969048646",
+            "id_channel": "1215781272232788008"
+        }
+    }
+}
