@@ -81,6 +81,7 @@ module.exports = {
             });
             
             await ticket.create({
+                autoIncrement: 0, // Se è il primo ticket in esistenza
                 userId: userId,
                 channelId: channel.id,
                 category: category,

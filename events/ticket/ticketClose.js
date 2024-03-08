@@ -50,6 +50,7 @@ module.exports = {
             var reason = data?.closingReason;
             var date = data?.createdAt;
             var claimedBy = data?.assignedTo;
+            var ticketID = data?.autoIncrement;
             date = Math.floor(new Date(date).getTime() / 1000);
 
             await ticket.updateOne(query, { $set: { status: "closed" } });
@@ -96,7 +97,7 @@ module.exports = {
             const dmDeposit = new EmbedBuilder()
                 .setTitle('Ticket Chiuso')
                 .addFields(
-                    { name: "🆔 Ticket ID:", value: `xxx` },
+                    { name: "🆔 Ticket ID:", value: `${ticketID}` },
                     { name: "📕 Categoria:", value: `\`${ticketInformation.category}\``, inline: true },
                     { name: "📚 Sotto categoria:", value: `\`${ticketInformation.subcategory}\``, inline: true },
                     { name: "🚪 Aperto da:", value: `<@${ticketInformation.userId}>`, inline: true },

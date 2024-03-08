@@ -1,7 +1,12 @@
 const mongoose = require('mongoose');
 
 const ticketSchema = new mongoose.Schema({
-    userId:{
+    autoIncrement: {
+        type: Number,
+        // required: true,
+        unique: true,
+    },
+    userId: {
         type: String,
         required: true,
     },
@@ -60,6 +65,20 @@ const ticketSchema = new mongoose.Schema({
     addedUsers: {
         type: [String],
     }
+});
+
+ticketSchema.pre('save', async function (next) {
+    if (!this.isNew) return next();
+    try {
+        lastDocument = await this.constructor.findOne({}, {}, { sort: { autoIncrement: -1 } });
+        if (lastDocument) {
+            this.autoIncrement = lastDocument.autoIncrement + 1;
+        } else {
+            this.autoIncrement = 1;
+        }
+        next();
+    }
+    catch (err) { next(err); }
 });
 
 module.exports = mongoose.model('ticketSchema', ticketSchema);
