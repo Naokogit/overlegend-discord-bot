@@ -1,8 +1,8 @@
 const { Events, EmbedBuilder } = require("discord.js")
 
-const { welcomeChannelId, primaryColor, logoIMG, welcomeIMG} = require('../configs/config.json');
+const { welcomeChannelId, primaryColor, logoIMG, welcomeIMG} = require('../../configs/config.json');
 
-const frasi = require('../configs/welcome.json');
+const frasi = require('../../configs/welcome.json');
 
 module.exports = {
     name: Events.GuildMemberAdd,

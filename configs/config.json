@@ -17,5 +17,7 @@
 
     "ticketIMG": "https://images-ext-1.discordapp.net/external/xDmWfZQnKepl4YtOXjKymdzkbO6mecZuO54ji85CjJ4/https/imgur.com/u5w5CQr.png?format=webp&quality=lossless&width=1216&height=111",
     "ticketChannel": "https://discord.com/channels/846773259852840960/1213161189870403684",
+
+    "memberCountChannelId": "1215709587890774066",
     "debug": true
 }
