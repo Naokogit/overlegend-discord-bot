@@ -53,6 +53,13 @@ SendVoiceMessages
 
 */
 
+const ticketViewPermissions = [
+    PermissionsBitField.Flags.ViewChannel,
+    PermissionsBitField.Flags.SendMessages,
+    PermissionsBitField.Flags.EmbedLinks,
+    PermissionsBitField.Flags.ReadMessageHistory,
+]
+
 function ticketPermissionDefault(interaction) {
     return [
         {
@@ -62,12 +69,7 @@ function ticketPermissionDefault(interaction) {
             ],
         },
         {
-            id: interaction.user.id, allow: [
-                PermissionsBitField.Flags.ViewChannel,
-                PermissionsBitField.Flags.SendMessages,
-                PermissionsBitField.Flags.EmbedLinks,
-                PermissionsBitField.Flags.ReadMessageHistory,
-            ],
+            id: interaction.user.id, allow: ticketViewPermissions,
         },
         {
             id: ticketsRole, allow: [
@@ -86,12 +88,7 @@ function ticketPermissionAdmin(interaction) {
             ],
         },
         {
-            id: interaction.user.id, allow: [
-                PermissionsBitField.Flags.ViewChannel,
-                PermissionsBitField.Flags.SendMessages,
-                PermissionsBitField.Flags.EmbedLinks,
-                PermissionsBitField.Flags.ReadMessageHistory,
-            ]
+            id: interaction.user.id, allow: ticketViewPermissions
         },
         {
             id: adminRole, allow: [
@@ -101,4 +98,4 @@ function ticketPermissionAdmin(interaction) {
     ]
 }
 
-module.exports = { ticketPermissionAdmin, ticketPermissionDefault };
+module.exports = { ticketPermissionAdmin, ticketPermissionDefault, ticketViewPermissions };

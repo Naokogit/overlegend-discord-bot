@@ -3,10 +3,6 @@ const { SlashCommandBuilder, PermissionsBitField, ChannelType, ActionRowBuilder,
 const { ticketCategories } = require('../../configs/tickets_category.json');
 const { primaryColor, ticketIMG, ticketsRole, logoIMG } = require('../../configs/config.json');
 
-const ticketCommand = new SlashCommandBuilder()
-    .setName('ticket')
-    .setDescription('ticket')
-
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('ticket')
@@ -95,7 +91,10 @@ module.exports = {
                     .setColor(Number(primaryColor))
                     .setFooter({ text: "OverLegend", iconURL: logoIMG });
                 if (!channel.permissionsFor(user).has(PermissionsBitField.Flags.ViewChannel)) {
-                    await channel.permissionOverwrites.edit(user, { ViewChannel: true });
+                    await channel.permissionOverwrites.edit(user, {
+                        ViewChannel: true,
+                        ReadMessageHistory: true,
+                    });
                         embed.setTitle(`➕ Aggiunto nuovo membro al ticket`)
                         .setDescription(`<@${user.id}> è stato aggiunto al ticket <#${channel.id}>`)
                     await interaction.reply({ embeds: [embed] });
