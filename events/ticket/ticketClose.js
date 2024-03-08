@@ -5,8 +5,13 @@ const { ticketsCategory, ticketsRole, ticketsDeposit, primaryColor, logoIMG, tic
 const ticket = require('../../schemas/ticketSchema');
 const getTicketCacheInformation = require('../../utils/getTicketCacheInformation');
 
+
 module.exports = {
     name: Events.InteractionCreate,
+    /**
+	 * 
+	 * @param {CommandInteraction} interaction 
+	 */
     async execute(interaction) {
         if((interaction.isButton() && interaction.customId === 'btnCloseTicket') ||
         (interaction.isModalSubmit() && interaction.customId === 'modalTicketCloseReason')){
@@ -111,9 +116,14 @@ module.exports = {
                 .setThumbnail(logoIMG)
                 .setTimestamp();
                 
-                await depositChannel.send({embeds: [dmDeposit], components: [depositRow]}).catch((err) => {});
-                await depositChannel.send({content: 'Transcript cache:', files: [file]});
-                await interaction.user.send({ embeds: [dmEmbed], components: [dmRow]}).catch((err) => {});
+            await depositChannel.send({embeds: [dmDeposit], components: [depositRow]}).catch((err) => {});
+            await depositChannel.send({ content: 'Transcript cache:', files: [file] });
+
+            await interaction.guild.client.users.fetch(ticketInformation.userId).then((u) => {
+                u.send({ embeds: [dmEmbed], components: [dmRow] }).catch((err) => { });
+            })
+
+            // await interaction.user.send({ embeds: [dmEmbed], components: [dmRow]}).catch((err) => {});
         }
         if(interaction.isButton() && interaction.customId === 'btnCloseReasonTicket'){
             if(interaction.member.roles.cache.some(r => r.id === ticketsRole)){
