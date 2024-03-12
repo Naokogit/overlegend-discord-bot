@@ -2,13 +2,13 @@ const { ModalBuilder, TextInputBuilder, TextInputStyle } = require("discord.js")
 
 const nicknameInput = createModalInput("nickname", "Inserisci il tuo nickname sul gioco", TextInputStyle.Short, "Nickname sul server", 3, 16, true);
 
-const issueInput = createModalInput("issue", "Descrivi nel dettaglio la tua richiesta", TextInputStyle.Paragraph, "Descrizione della richiesta", 10, 1024, true);
+const issueInput = createModalInput("issue", "Descrivi la richiesta/problematica", TextInputStyle.Paragraph, "Descrizione della richiesta/problematica", 10, 1024, true);
 
 const premiumInput = createModalInput("premium", "Hai acquistato Minecraft? (Java Premium)", TextInputStyle.Short, "Si/No", 2, 2, true)
 
 const deviceInput = createModalInput("device", "Su che piattaforma sei? (Java o Bedrock)", TextInputStyle.Short, "Java/Bedrock", 4, 7, true);
 
-const topicInput = createModalInput("topic", "Topic principale del ticket", TextInputStyle.Short, "Segnalazione giocatore, bug", 3, 100, true);
+const topicInput = createModalInput("topic", "Topic principale del ticket", TextInputStyle.Short, "Dai un titolo a questo ticket", 3, 100, true);
 
 const newAccountInput = createModalInput("newaccount", "Nickname del nuovo account", TextInputStyle.Short, "Inserisci il nickname del nuovo Account", 3, 16, true);
 
@@ -16,6 +16,7 @@ const secondAccountInput = createModalInput("secondaccount", "Nickname del secon
 
 const dateInput = createModalInput("date", "Indica la disponibilità di orario", TextInputStyle.Short, "Fascia oraria: (es. Merc. 18:00 - 20:00)", 5, 100, true);
 
+const userReportInput = createModalInput("userreport", "Nickname dei giocatori da segnalare", TextInputStyle.Short, "Inserisci i nickname", 3, 200, true)
 
 // Partnership
 
@@ -41,4 +42,4 @@ function createModalInput(customId, label, style, placeholder, minLength, maxLen
         .setRequired(required);
 }
 
-module.exports = { nicknameInput, issueInput, premiumInput, deviceInput, topicInput, newAccountInput, mediaLinkInput, dateInput, mediaAverageViewersInput, devroleInput, secondAccountInput };
+module.exports = { nicknameInput, issueInput, premiumInput, deviceInput, topicInput, newAccountInput, mediaLinkInput, dateInput, mediaAverageViewersInput, devroleInput, secondAccountInput, userReportInput };

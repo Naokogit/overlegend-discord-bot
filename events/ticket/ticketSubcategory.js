@@ -8,7 +8,7 @@ const {
 
 const { ticketCategories } = require("../../configs/tickets_category.json");
 
-const { nicknameInput, issueInput, deviceInput, premiumInput, newAccountInput, secondAccountInput, devroleInput, dateInput } = require("../../modules/modalInputModule");
+const { nicknameInput, issueInput, topicInput, deviceInput, premiumInput, newAccountInput, secondAccountInput, devroleInput, dateInput, userReportInput } = require("../../modules/modalInputModule");
 
 const {subcategories, isSubcategory} = require('../../utils/getAllSubcategories');
 
@@ -28,8 +28,26 @@ module.exports = {
             const modal = new ModalBuilder()
                 .setCustomId(`modalTicket_${category}-${subcategory.id}`)
                 .setTitle(`${subcategory.label}`);
-                
+
             switch (subcategory.id) {
+                case "info":
+                case "other":
+                case "bug_report":
+                    modal.addComponents(
+                        new ActionRowBuilder().addComponents(nicknameInput), 
+                        new ActionRowBuilder().addComponents(deviceInput),
+                        new ActionRowBuilder().addComponents(topicInput),
+                        new ActionRowBuilder().addComponents(issueInput),
+                        );
+                    break;
+                case "user_report":
+                    modal.addComponents(
+                        new ActionRowBuilder().addComponents(nicknameInput),
+                        new ActionRowBuilder().addComponents(userReportInput),
+                        new ActionRowBuilder().addComponents(topicInput),
+                        new ActionRowBuilder().addComponents(issueInput),
+                    );
+                    break;
                 case "builder":
                 case "helper":
                 case "reset_password":

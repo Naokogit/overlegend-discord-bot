@@ -4,7 +4,33 @@
             "label": "Supporto Modalità",
             "emoji": "🕹",
             "long_description": "Per richieste specifiche di supporto per una modalità del Network o per segnalazioni di giocatori o bug",
-            "description": "Supporto per giochi, giocatori e bug."
+            "description": "Supporto per giochi, giocatori e bug.",
+            "subcategory": [
+                {
+                    "label": "Informazioni Modalità",
+                    "emoji": "ℹ️",
+                    "text": "Richiedi informazioni su una modalità",
+                    "id": "info"
+                },
+                {
+                    "label": "Segnalazione Bug",
+                    "emoji": "🐛",
+                    "text": "Segnala bug che hai riscontrato in una modalità",
+                    "id": "bug_report"
+                },
+                {
+                    "label": "Segnalazione Giocatore",
+                    "emoji": "🤵",
+                    "text": "Segnalazione Giocatore",
+                    "id": "user_report"
+                },
+                {
+                    "label": "Altro",
+                    "emoji": "👝",
+                    "text": "Altro",
+                    "id": "other"
+                }
+            ]
         },
         "account": {
             "label": "Supporto Account",
@@ -15,7 +41,7 @@
                 {
                     "label": "Richiesta Reset Password",
                     "emoji": "⚙",
-                    "text": "Richiesta Reset Password",
+                    "text": "Richiedi il Reset della password del tuo account",
                     "id": "reset_password"
                 },
                 {

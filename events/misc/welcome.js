@@ -15,7 +15,7 @@ module.exports = {
 
         const embed = new EmbedBuilder()
             .setTitle(`Benvenuto nel Discord ufficiale di OVERLEGEND`)
-            .setDescription(`Benvenuto <@${member.id}> su OverLegend, \n${random}`)
+            .setDescription(`Benvenuto <@${member.id}> su OverLegend, \n${random}\n\nIP: mc.overlegend.it`)
             .setColor(Number(primaryColor))
             .setImage(welcomeIMG)
             .setThumbnail(logoIMG)
