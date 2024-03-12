@@ -64,6 +64,9 @@ const ticketSchema = new mongoose.Schema({
     },
     addedUsers: {
         type: [String],
+    },
+    transcriptHTML: {
+        type: String
     }
 });
 

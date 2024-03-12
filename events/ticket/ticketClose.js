@@ -52,24 +52,31 @@ module.exports = {
             const query = {userId: ticketInformation.userId, category: ticketInformation.category, status: "open"}
 
             const data = await ticket.findOne(query);
+
+            if(!data){
+                interaction.reply({content: "Il ticket è già impostato su 'closed', probabilmente c'è stato qualche problema...", ephemeral: true});
+                return;
+            }
+
             var reason = data?.closingReason;
             var date = data?.createdAt;
             var claimedBy = data?.assignedTo;
             var ticketID = data?.autoIncrement;
             date = Math.floor(new Date(date).getTime() / 1000);
 
-            await ticket.updateOne(query, { $set: { status: "closed" } });
             
             const file = await createTranscript(interaction.channel, {
                 limit: -1,
                 returnBuffer: false,
-                filename: `${interaction.channel}-transcript.html`
+                // filename: `${interaction.channel}-transcript.html`
             });
+
+            await ticket.updateOne(query, { $set: { status: "closed", transcriptHTML: file.attachment.toString() } });
             
             depositChannel = interaction.client.channels.cache.get(ticketsDeposit);
-            var msg = await interaction.channel.send({content: `Transcript cache:`, files: [file]});
+            // var msg = await interaction.channel.send({content: `Transcript cache:`, files: [file]});
             
-            const transcriptURL = `https://mahto.id/chat-exporter?url=${msg.attachments.first()?.url}`
+            // const transcriptURL = `https://mahto.id/chat-exporter?url=${msg.attachments.first()?.url}`
             
             await interaction.channel.delete().catch(err => { });
             
@@ -94,9 +101,9 @@ module.exports = {
             const dmTranscript = new ButtonBuilder()
             .setLabel('Transcript')
             .setStyle(ButtonStyle.Link)
-            .setURL(transcriptURL)
+            .setURL(`http://overlegend.it/tickets/${ticketID}`);
             
-            const dmRow = new ActionRowBuilder().addComponents(dmButton, dmTranscript);
+            const dmRow = new ActionRowBuilder().addComponents(dmButton);
             const depositRow = new ActionRowBuilder().addComponents(dmTranscript);
 
             const dmDeposit = new EmbedBuilder()
@@ -117,7 +124,7 @@ module.exports = {
                 .setTimestamp();
                 
             await depositChannel.send({embeds: [dmDeposit], components: [depositRow]}).catch((err) => {});
-            await depositChannel.send({ content: 'Transcript cache:', files: [file] });
+            // await depositChannel.send({ content: 'Transcript cache:', files: [file] });
 
             await interaction.guild.client.users.fetch(ticketInformation.userId).then((u) => {
                 u.send({ embeds: [dmEmbed], components: [dmRow] }).catch((err) => { });
