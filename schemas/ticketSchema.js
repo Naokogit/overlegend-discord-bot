@@ -47,6 +47,9 @@ const ticketSchema = new mongoose.Schema({
     devrole: {
         type: String,
     },
+    userreport: {
+        type: String,
+    },
     status: {
         type: String,
         default: 'open'

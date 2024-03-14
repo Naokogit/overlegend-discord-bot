@@ -16,7 +16,7 @@ const secondAccountInput = createModalInput("secondaccount", "Nickname del secon
 
 const dateInput = createModalInput("date", "Indica la disponibilità di orario", TextInputStyle.Short, "Fascia oraria: (es. Merc. 18:00 - 20:00)", 5, 100, true);
 
-const userReportInput = createModalInput("userreport", "Nickname dei giocatori da segnalare", TextInputStyle.Short, "Inserisci i nickname", 3, 200, true)
+const userReportInput = createModalInput("userreport", "Nickname dei giocatori da segnalare", TextInputStyle.Short, "Inserisci i nickname ESATTI", 3, 200, true)
 
 // Partnership
 

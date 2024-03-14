@@ -43,7 +43,7 @@ module.exports = {
             var ticketPermissionOverwrites;
             var ticketProperties = {};
             
-            const fields = ['nickname', 'device', 'topic', 'issue', 'premium', 'newaccount', 'secondaccount', 'date', 'devrole'];
+            const fields = ['nickname', 'device', 'topic', 'issue', 'premium', 'newaccount', 'secondaccount', 'date', 'devrole', 'userreport'];
 
             fields.forEach(field => { try {
                     ticketProperties[field] = interaction.fields.getTextInputValue(field);
@@ -95,6 +95,7 @@ module.exports = {
                 secondaccount: ticketProperties?.secondaccount,
                 date: ticketProperties?.date,
                 devrole: ticketProperties?.devrole,
+                userreport: ticketProperties?.userreport,
             });
 
             const ticketEmbed = new EmbedBuilder()
@@ -114,6 +115,7 @@ module.exports = {
             if (ticketProperties.devrole) ticketEmbed.addFields({ name: '⚒️ Ruolo desiderato', value: `\`\`\`${ticketProperties.devrole}\`\`\`` });
             if (ticketProperties.newaccount) ticketEmbed.addFields({ name: '👤 Nuovo account', value: `\`\`\`${ticketProperties.newaccount}\`\`\`` });
             if (ticketProperties.secondaccount) ticketEmbed.addFields({ name: '👤 Account secondario', value: `\`\`\`${ticketProperties.secondaccount}\`\`\`` });
+            if (ticketProperties.userreport) ticketEmbed.addFields({ name: '👤 Utenti segnalati', value: `\`\`\`${ticketProperties.userreport}\`\`\`` });
             if (ticketProperties.topic) ticketEmbed.addFields({ name: '✨ Topic principale', value: `\`\`\`${ticketProperties.topic}\`\`\`` });
             if (ticketProperties.issue) ticketEmbed.addFields({ name: '🔧 Descrizione del problema', value: `\`\`\`${ticketProperties.issue}\`\`\`` });
 
