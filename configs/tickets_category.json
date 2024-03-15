@@ -68,7 +68,21 @@
             "label": "Supporto Commerciale",
             "emoji": "💸",
             "long_description": "Per richiedere supporto generale negli acquisti, recuperare un pacchetto VIP, oppure richiedere una collaborazione",
-            "description": "Supporto acquisti, VIP, collaborazioni."
+            "description": "Supporto acquisti, VIP, collaborazioni.",
+            "subcategory": [
+                {
+                    "label": "Domande Commerciali",
+                    "emoji": "💬",
+                    "text": "Domande commerciali generali o problemi di acquisto",
+                    "id": "info_commercial"
+                },
+                {
+                    "label": "Richiesta Partnership",
+                    "emoji": "💎",
+                    "text": "Richiesta partnership per il ruolo di YouTube/Twitch/TikTok",
+                    "id": "partnership"
+                }
+            ]
         },
         "application": {
             "label": "Candidature",

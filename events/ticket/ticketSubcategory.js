@@ -8,7 +8,7 @@ const {
 
 const { ticketCategories } = require("../../configs/tickets_category.json");
 
-const { nicknameInput, issueInput, topicInput, deviceInput, premiumInput, newAccountInput, secondAccountInput, devroleInput, dateInput, userReportInput } = require("../../modules/modalInputModule");
+const { nicknameInput, issueInput, topicInput, deviceInput, premiumInput, newAccountInput, secondAccountInput, devroleInput, dateInput, userReportInput, videoPerWeekInput, channelDescriptionInput, mediaAverageViewersInput, mediaLinkInput } = require("../../modules/modalInputModule");
 
 const {subcategories, isSubcategory} = require('../../utils/getAllSubcategories');
 
@@ -33,6 +33,7 @@ module.exports = {
                 case "info":
                 case "other":
                 case "bug_report":
+                case "info_commercial":
                     modal.addComponents(
                         new ActionRowBuilder().addComponents(nicknameInput), 
                         new ActionRowBuilder().addComponents(deviceInput),
@@ -86,6 +87,14 @@ module.exports = {
                         new ActionRowBuilder().addComponents(devroleInput)
                     );
                     break;
+                case "partnership":
+                    modal.addComponents(
+                        new ActionRowBuilder().addComponents(nicknameInput),
+                        new ActionRowBuilder().addComponents(mediaLinkInput),
+                        new ActionRowBuilder().addComponents(mediaAverageViewersInput),
+                        new ActionRowBuilder().addComponents(videoPerWeekInput),
+                        new ActionRowBuilder().addComponents(channelDescriptionInput),
+                        )
             }
             await interaction.showModal(modal);
         }

@@ -43,7 +43,7 @@ module.exports = {
             var ticketPermissionOverwrites;
             var ticketProperties = {};
             
-            const fields = ['nickname', 'device', 'topic', 'issue', 'premium', 'newaccount', 'secondaccount', 'date', 'devrole', 'userreport'];
+            const fields = ['nickname', 'device', 'topic', 'issue', 'premium', 'newaccount', 'secondaccount', 'date', 'devrole', 'userreport', 'medialink', 'media_average', 'weekly_videos', 'channel_description'];
 
             fields.forEach(field => { try {
                     ticketProperties[field] = interaction.fields.getTextInputValue(field);
@@ -69,6 +69,9 @@ module.exports = {
                     ticketName = `${interaction.user.username}-candidatura`
                     ticketPermissionOverwrites = ticketPermissionDefault(interaction);
                     break;
+                case 'commercial':
+                    ticketName = `${interaction.user.username}-commerciale`
+                    ticketPermissionOverwrites = ticketPermissionAdmin(interaction);
             }
                 
             console.log(`[DB] Creating a new ticket...`)
@@ -118,6 +121,10 @@ module.exports = {
             if (ticketProperties.userreport) ticketEmbed.addFields({ name: '👤 Utenti segnalati', value: `\`\`\`${ticketProperties.userreport}\`\`\`` });
             if (ticketProperties.topic) ticketEmbed.addFields({ name: '✨ Topic principale', value: `\`\`\`${ticketProperties.topic}\`\`\`` });
             if (ticketProperties.issue) ticketEmbed.addFields({ name: '🔧 Descrizione del problema', value: `\`\`\`${ticketProperties.issue}\`\`\`` });
+            if (ticketProperties.medialink) ticketEmbed.addFields({ name: '📽️ Link al canale', value: `\`\`\`${ticketProperties.medialink}\`\`\`` });
+            if (ticketProperties.media_average) ticketEmbed.addFields({ name: '⚖️ Media spettatori/views', value: `\`\`\`${ticketProperties.media_average}\`\`\`` });
+            if (ticketProperties.weekly_videos) ticketEmbed.addFields({ name: '🔢 Numero di Live/Video settimanali', value: `\`\`\`${ticketProperties.weekly_videos}\`\`\`` });
+            if (ticketProperties.channel_description) ticketEmbed.addFields({ name: '📜 Descrizione del canale e dei contenuti', value: `\`\`\`${ticketProperties.channel_description}\`\`\`` });
 
 
             const closeBtn = new ButtonBuilder()

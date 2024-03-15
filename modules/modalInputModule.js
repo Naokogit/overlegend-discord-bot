@@ -22,8 +22,11 @@ const userReportInput = createModalInput("userreport", "Nickname dei giocatori d
 
 const mediaLinkInput = createModalInput("medialink", "Link al canale (YouTube/Twitch/Tiktok)", TextInputStyle.Short, "https://...", 1, 1024, true);
 
-const mediaAverageViewersInput = createModalInput("average", "Media spettatori live o views per video", TextInputStyle.Short, "Inserisci un numero", 5, 100, true);
+const mediaAverageViewersInput = createModalInput("media_average", "Media spettatori live o views per video", TextInputStyle.Short, "Inserisci un numero", 5, 100, true);
 
+const videoPerWeekInput = createModalInput("weekly_videos", "Numero di Live/Video a settimana", TextInputStyle.Short, "Inserisci un numero", 2, 100, true);
+
+const channelDescriptionInput = createModalInput("channel_description", "Descrizione del canale e dei contenuti", TextInputStyle.Paragraph, "Descrizione del canale", 100, 4000, true);
 // numero di live/video a settimana
 
 // descrizione canale/contenuti
@@ -42,4 +45,4 @@ function createModalInput(customId, label, style, placeholder, minLength, maxLen
         .setRequired(required);
 }
 
-module.exports = { nicknameInput, issueInput, premiumInput, deviceInput, topicInput, newAccountInput, mediaLinkInput, dateInput, mediaAverageViewersInput, devroleInput, secondAccountInput, userReportInput };
+module.exports = { nicknameInput, issueInput, premiumInput, deviceInput, topicInput, newAccountInput, mediaLinkInput, dateInput, mediaAverageViewersInput, devroleInput, secondAccountInput, userReportInput, videoPerWeekInput, channelDescriptionInput };

@@ -17,9 +17,9 @@ module.exports = {
             if (!ticketCategories[categorySelected])
                 return;
 
-            const modal = new ModalBuilder()
-                .setCustomId(`modalTicket_${categorySelected}`)
-                .setTitle(`${categorySelected}`);
+            // const modal = new ModalBuilder()
+            //     .setCustomId(`modalTicket_${categorySelected}`)
+            //     .setTitle(`${categorySelected}`);
 
             const embed = new EmbedBuilder().setTitle('Seleziona una sotto categoria').setTimestamp().setColor(Number(primaryColor)).setFooter({text:"OverLegend",iconURL: logoIMG});
 
@@ -44,7 +44,7 @@ module.exports = {
                 //     break;
                 case 'gamemode':
                 case 'application':
-                case 'commerce':
+                case 'commercial':
                 case 'account':
 
                     const row = new ActionRowBuilder();
