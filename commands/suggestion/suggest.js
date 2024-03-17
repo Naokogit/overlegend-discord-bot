@@ -17,6 +17,8 @@ const suggestion = require("../../schemas/suggestionSchema");
 const formatResults = require('../../utils/formatResults');
 const suggestionSchema = require("../../schemas/suggestionSchema");
 
+const { debug, suggestionsChannelId } = require('../../configs/config.json');
+
 module.exports = {
     data: new SlashCommandBuilder()
         .setName("suggestion")
@@ -47,6 +49,12 @@ module.exports = {
                 .setMinLength(50)
                 .setMaxLength(4000)
                 .setRequired(true);
+
+            if(debug){
+                titleInput.setValue("Lorem Ipsum");
+                suggestionInput.setValue("Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam eaque ipsa, quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt, explicabo. Nemo enim ipsam voluptatem, quia voluptas sit, aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos, qui ratione voluptatem sequi nesciunt");
+            }
+
             modal.addComponents(
                 new ActionRowBuilder().addComponents(titleInput),
                 new ActionRowBuilder().addComponents(suggestionInput)
@@ -64,8 +72,11 @@ module.exports = {
 
             let suggestionMessage;
 
+
+            const suggestion_channel = interaction.client.channels.cache.get(suggestionsChannelId);
+
             try {
-                suggestionMessage = await interaction.channel.send(
+                suggestionMessage = await suggestion_channel.send(
                     "Creating suggestion, wait..."
                 );
             } catch (error) {
@@ -98,7 +109,7 @@ module.exports = {
                 .addFields([
                     {name: 'Title', value: suggestionTitle},
                     {name: 'Suggestion', value: suggestionText},
-                    {name: 'Status', value: "Pending"},
+                    {name: 'Status', value: "⏳ In attesa"},
                     {name: 'Votes', value: formatResults()}
                 ])
                 .setColor('Yellow');
@@ -130,11 +141,22 @@ module.exports = {
             const firstRow = new ActionRowBuilder().addComponents(upvoteButton, downvoteButton);
             const secondRow = new ActionRowBuilder().addComponents(approveButton, rejectButton);
 
-            suggestionMessage.edit({
+            await suggestionMessage.edit({
                 content: `${interaction.user} Suggestion created!`,
                 embeds: [embed],
                 components: [firstRow, secondRow]
             });
+
+
+            const targetMessage = await suggestion_channel.messages.fetch(suggestionMessage.id);
+
+            const thread = await targetMessage.startThread({
+                name: `${suggestionTitle}`,
+                autoArchiveDuration: 60,
+                reason: `${suggestionInput}`
+            });
+
+
         } catch(err) { console.log(err)}
     },
 };
