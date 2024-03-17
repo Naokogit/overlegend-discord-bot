@@ -20,5 +20,7 @@
     "ticketChannel": "https://discord.com/channels/846773259852840960/1213161189870403684",
 
     "memberCountChannelId": "1215709587890774066",
+
+    "suggestionsChannelId": "1215781272232788008",
     "debug": true
 }

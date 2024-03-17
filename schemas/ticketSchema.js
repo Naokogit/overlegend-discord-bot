@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
+const {Schema, model} = require('mongoose');
 
-const ticketSchema = new mongoose.Schema({
+const ticketSchema = new Schema({
     autoIncrement: {
         type: Number,
         // required: true,
@@ -87,4 +87,4 @@ ticketSchema.pre('save', async function (next) {
     catch (err) { next(err); }
 });
 
-module.exports = mongoose.model('ticketSchema', ticketSchema);
+module.exports = model('ticketSchema', ticketSchema);

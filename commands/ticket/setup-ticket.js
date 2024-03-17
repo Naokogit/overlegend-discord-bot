@@ -9,7 +9,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('ticket')
         .setDescription('ticket')
-        .addSubcommand(command => command.setName('setup').setDescription('Setup ticket')
+        .addSubcommand(command => command.setName('setup').setDescription('Setup ticket channel')
             .addChannelOption(option => 
                 option.setName('channel')
                     .setRequired(true)
