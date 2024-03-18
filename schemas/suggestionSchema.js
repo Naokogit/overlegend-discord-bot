@@ -17,6 +17,11 @@ const suggestionSchema = new Schema(
             required: true,
             unique: true,
         },
+        threadId: {
+            type: String,
+            // required: true,
+            unique: true,
+        },
         title: {
             type: String,
             required: true,

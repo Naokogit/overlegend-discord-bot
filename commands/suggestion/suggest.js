@@ -87,8 +87,6 @@ module.exports = {
             const suggestionText = modalInteraction.fields.getTextInputValue("suggestion-input");
             const suggestionTitle = modalInteraction.fields.getTextInputValue("suggestion-title");
 
-
-
             const newSuggestion = suggestion({
                 autoIncrement: 0,
                 userId: interaction.user.id,
@@ -97,10 +95,10 @@ module.exports = {
                 content: suggestionText,
             });
 
-            await await newSuggestion.save();
+            await newSuggestion.save();
 
-            modalInteraction.editReply('Suggestion created!');
-
+            modalInteraction.editReply('Proposta creata!');
+            
             const embed = new EmbedBuilder()
                 .setAuthor({
                     name: interaction.user.username,
@@ -113,50 +111,59 @@ module.exports = {
                     {name: 'Votes', value: formatResults()}
                 ])
                 .setColor('Yellow');
-
-            const upvoteButton = new ButtonBuilder()
+                
+                const upvoteButton = new ButtonBuilder()
                 .setEmoji('👍')
                 .setLabel('Upvote')
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId(`suggestion.${newSuggestion.autoIncrement}.upvote`)
-            const downvoteButton = new ButtonBuilder()
+                const downvoteButton = new ButtonBuilder()
                 .setEmoji('👎')
                 .setLabel('Downvote')
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId(`suggestion.${newSuggestion.autoIncrement}.downvote`)
-            
-            const approveButton = new ButtonBuilder()
+                
+                const approveButton = new ButtonBuilder()
                 .setEmoji('👌')
                 .setLabel('Approve')
                 .setStyle(ButtonStyle.Success)
                 .setCustomId(`suggestion.${newSuggestion.autoIncrement}.approve`)
 
-            const rejectButton = new ButtonBuilder()
+                console.log(newSuggestion.autoIncrement);
+                
+                const rejectButton = new ButtonBuilder()
                 .setEmoji('🗑')
                 .setLabel('Reject')
                 .setStyle(ButtonStyle.Success)
                 .setCustomId(`suggestion.${newSuggestion.autoIncrement}.reject`)
-
-
-            const firstRow = new ActionRowBuilder().addComponents(upvoteButton, downvoteButton);
-            const secondRow = new ActionRowBuilder().addComponents(approveButton, rejectButton);
-
+                
+                
+                const firstRow = new ActionRowBuilder().addComponents(upvoteButton, downvoteButton);
+                const secondRow = new ActionRowBuilder().addComponents(approveButton, rejectButton);
+                
             await suggestionMessage.edit({
-                content: `${interaction.user} Suggestion created!`,
+                content: `${interaction.user} ha fatto una proposta!`,
                 embeds: [embed],
                 components: [firstRow, secondRow]
             });
-
-
+            
+            
             const targetMessage = await suggestion_channel.messages.fetch(suggestionMessage.id);
-
+            
             const thread = await targetMessage.startThread({
                 name: `${suggestionTitle}`,
                 autoArchiveDuration: 60,
                 reason: `${suggestionInput}`
             });
 
+            // console.log(thread);
+            // newSuggestion.threadId = thread.id;
+            const data = await suggestion.updateOne({autoIncrement: newSuggestion.autoIncrement}, { $set: { threadId: thread.id } });
+            console.log(newSuggestion.autoIncrement);
+            console.log(data);
 
+            // await newSuggestion.save();
+            
         } catch(err) { console.log(err)}
     },
 };
