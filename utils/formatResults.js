@@ -1,6 +1,6 @@
-const pb = require('../configs/emojis.json');
+const emojis = require('../configs/emojis.json');
 
-// const pb = {
+// const emojis = {
 //     le: '',
 //     me: '',
 //     re: '',
@@ -11,7 +11,7 @@ const pb = require('../configs/emojis.json');
    
   function formatResults(upvotes = [], downvotes = []) {
     const totalVotes = upvotes.length + downvotes.length;
-    const progressBarLength = 14;
+    const progressBarLength = 10;
     const filledSquares = Math.round((upvotes.length / totalVotes) * progressBarLength) || 0;
     const emptySquares = progressBarLength - filledSquares || 0;
    
@@ -23,15 +23,15 @@ const pb = require('../configs/emojis.json');
     const downPercentage = (downvotes.length / totalVotes) * 100 || 0;
    
     const progressBar =
-      (filledSquares ? pb.lf : pb.le) +
-      (pb.mf.repeat(filledSquares) + pb.me.repeat(emptySquares)) +
-      (filledSquares === progressBarLength ? pb.rf : pb.re);
+      (filledSquares ? emojis.lf : emojis.le) +
+      (emojis.mf.repeat(filledSquares) + emojis.me.repeat(emptySquares)) +
+      (filledSquares === progressBarLength ? emojis.rf : emojis.re);
    
     const results = [];
     results.push(
-      `👍 ${upvotes.length} upvotes (${upPercentage.toFixed(1)}%) • 👎 ${
+      `${emojis.upvote} **${upvotes.length} Upvotes** (${upPercentage.toFixed(1)}%) • ${emojis.downvote} **${
         downvotes.length
-      } downvotes (${downPercentage.toFixed(1)}%)`
+      } Downvotes** (${downPercentage.toFixed(1)}%)`
     );
     results.push(progressBar);
    

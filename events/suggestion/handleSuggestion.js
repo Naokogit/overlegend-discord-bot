@@ -14,13 +14,11 @@ module.exports = {
             if (!interaction.isButton() || !interaction.customId) return;
     
             const [type, suggestionId, action] = interaction.customId.split('.');
-            console.log(interaction.customId);
             if (!type || !suggestionId || !action || type !== 'suggestion') return;
     
             await interaction.deferReply({ ephemeral: true });
     
             const targetSuggestion = await suggestion.findOne({ autoIncrement: suggestionId });
-            console.log(suggestionId);
             if(!targetSuggestion) return;
 
             const targetMessage = await interaction.channel.messages.fetch(targetSuggestion.messageId);
@@ -43,7 +41,7 @@ module.exports = {
     
                     await targetSuggestion.save();
                     interaction.editReply(`Suggestion ${status}!`);
-    
+
                     targetMessage.edit({
                         embeds: [targetMessageEmbed],
                         components: [targetMessage.components[0]],
@@ -73,7 +71,7 @@ module.exports = {
                         targetSuggestion.upvotes,
                         targetSuggestion.downvotes,
                     );
-    
+
                     targetMessage.edit({
                         embeds: [targetMessageEmbed],
                     });

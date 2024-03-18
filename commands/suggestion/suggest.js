@@ -15,9 +15,10 @@ const {
 
 const suggestion = require("../../schemas/suggestionSchema");
 const formatResults = require('../../utils/formatResults');
-const suggestionSchema = require("../../schemas/suggestionSchema");
 
 const { debug, suggestionsChannelId } = require('../../configs/config.json');
+
+const emojis = require('../../configs/emojis.json');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -30,7 +31,7 @@ module.exports = {
     async execute(interaction) {
         try {
             const modal = new ModalBuilder()
-                .setTitle("Feedback")
+                .setTitle("CREA UN FEEDBACK")
                 .setCustomId(`suggestion-${interaction.user.id}`);
 
             const titleInput = new TextInputBuilder()
@@ -72,7 +73,6 @@ module.exports = {
 
             let suggestionMessage;
 
-
             const suggestion_channel = interaction.client.channels.cache.get(suggestionsChannelId);
 
             try {
@@ -105,41 +105,40 @@ module.exports = {
                     iconURL: interaction.user.displayAvatarURL({ size: 256 })
                 })
                 .addFields([
-                    {name: 'Title', value: suggestionTitle},
-                    {name: 'Suggestion', value: suggestionText},
-                    {name: 'Status', value: "⏳ In attesa"},
-                    {name: 'Votes', value: formatResults()}
+                    {name: '• TITOLO', value: suggestionTitle},
+                    {name: '• DESCRIZIONE', value: suggestionText},
+                    {name: '• STATO', value: "⏳ In attesa"},
+                    {name: '• VOTI', value: formatResults()}
                 ])
-                .setColor('Yellow');
+                .setColor('Orange');
                 
-                const upvoteButton = new ButtonBuilder()
-                .setEmoji('👍')
+            const upvoteButton = new ButtonBuilder()
+                .setEmoji(emojis.upvote)
                 .setLabel('Upvote')
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId(`suggestion.${newSuggestion.autoIncrement}.upvote`)
-                const downvoteButton = new ButtonBuilder()
-                .setEmoji('👎')
+            
+            const downvoteButton = new ButtonBuilder()
+                .setEmoji(emojis.downvote)
                 .setLabel('Downvote')
                 .setStyle(ButtonStyle.Primary)
                 .setCustomId(`suggestion.${newSuggestion.autoIncrement}.downvote`)
                 
-                const approveButton = new ButtonBuilder()
+            const approveButton = new ButtonBuilder()
                 .setEmoji('👌')
-                .setLabel('Approve')
+                .setLabel('Approva')
                 .setStyle(ButtonStyle.Success)
                 .setCustomId(`suggestion.${newSuggestion.autoIncrement}.approve`)
-
-                console.log(newSuggestion.autoIncrement);
                 
-                const rejectButton = new ButtonBuilder()
+            const rejectButton = new ButtonBuilder()
                 .setEmoji('🗑')
-                .setLabel('Reject')
-                .setStyle(ButtonStyle.Success)
+                .setLabel('Rifiuta')
+                .setStyle(ButtonStyle.Danger)
                 .setCustomId(`suggestion.${newSuggestion.autoIncrement}.reject`)
                 
                 
-                const firstRow = new ActionRowBuilder().addComponents(upvoteButton, downvoteButton);
-                const secondRow = new ActionRowBuilder().addComponents(approveButton, rejectButton);
+            const firstRow = new ActionRowBuilder().addComponents(upvoteButton, downvoteButton);
+            const secondRow = new ActionRowBuilder().addComponents(approveButton, rejectButton);
                 
             await suggestionMessage.edit({
                 content: `${interaction.user} ha fatto una proposta!`,
