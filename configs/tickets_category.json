@@ -4,7 +4,7 @@
             "label": "Supporto Modalità",
             "emoji": "🕹",
             "long_description": "Per richieste specifiche di supporto per una modalità del Network o per segnalazioni di giocatori o bug",
-            "description": "Supporto per giochi, giocatori e bug.",
+            "description": "Supporto per modalità, giocatori e bug.",
             "subcategory": [
                 {
                     "label": "Informazioni Modalità",
@@ -15,19 +15,19 @@
                 {
                     "label": "Segnalazione Bug",
                     "emoji": "🐛",
-                    "text": "Segnala bug che hai riscontrato in una modalità",
+                    "text": "Segnala bug riscontrati in una modalità",
                     "id": "bug_report"
                 },
                 {
                     "label": "Segnalazione Giocatore",
                     "emoji": "🤵",
-                    "text": "Segnalazione Giocatore",
+                    "text": "Segnala un giocatore che ha infranto il regolamento.",
                     "id": "user_report"
                 },
                 {
                     "label": "Altro",
                     "emoji": "👝",
-                    "text": "Altro",
+                    "text": "Richiedi altro supporto",
                     "id": "other"
                 }
             ]
@@ -35,7 +35,7 @@
         "account": {
             "label": "Supporto Account",
             "emoji": "🔑",
-            "long_description": "Per aiuto nella gestione del proprio account, richiedere trasferimenti, reset password, etc.",
+            "long_description": "Per aiuto nella gestione del proprio account, richiedere trasferimenti, reset password, ecc.",
             "description": "Aiuto gestione, trasferimenti, reset password.",
             "subcategory": [
                 {
@@ -47,7 +47,7 @@
                 {
                     "label": "Trasferimento Account",
                     "emoji": "🔀",
-                    "text": "Richiedi un trasferimento account (SP -> PREMIUM, PREMIUM -> PREMIUM)",
+                    "text": "Richiedi un trasferimento account",
                     "id": "transfer_account"
                 },
                 {
@@ -59,7 +59,7 @@
                 {
                     "label": "Problemi al Login/Register",
                     "emoji": "🔀",
-                    "text": "Problemi relativi al Login o alla Registrazione",
+                    "text": "Riscontri problemi durante il Login o la Registrazione?",
                     "id": "login_problems"
                 }
             ]
@@ -73,7 +73,7 @@
                 {
                     "label": "Domande Commerciali",
                     "emoji": "💬",
-                    "text": "Domande commerciali generali o problemi di acquisto",
+                    "text": "Hai domande su acquisti o problemi con VIP?",
                     "id": "info_commercial"
                 },
                 {
