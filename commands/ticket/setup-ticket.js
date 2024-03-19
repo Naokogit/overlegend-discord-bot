@@ -2,6 +2,7 @@ const { SlashCommandBuilder, PermissionsBitField, ChannelType, ActionRowBuilder,
 
 const { ticketCategories } = require('../../configs/tickets_category.json');
 const { primaryColor, ticketIMG, ticketsRole, logoIMG } = require('../../configs/config.json');
+const emojis = require('../../configs/emojis.json');
 const ticket = require('../../schemas/ticketSchema');
 const getTicketCacheInformation = require('../../utils/getTicketCacheInformation');
 
@@ -65,7 +66,7 @@ module.exports = {
                 
                 const ticket_embed = new EmbedBuilder()
                     .setColor(Number(primaryColor))
-                    .setTitle('SISTEMA DI SUPPORTO <:ol:1194007647582699590>')
+                    .setTitle(`${emojis.ol} SISTEMA DI SUPPORTO`)
                     .setDescription(`
                     Selezionando una delle opzioni qua sotto potrai
                     parlare con lo staff in un canale privato.

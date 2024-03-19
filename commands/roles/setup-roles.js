@@ -1,6 +1,6 @@
 const { SlashCommandBuilder, PermissionsBitField, ChannelType, StringSelectMenuInteraction, ActionRowBuilder, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, EmbedBuilder} = require('discord.js');
 
-const { roles } = require('../../configs/roles.json');
+const { roles } = require('../../configs/roles_channel.json');
 const { primaryColor, logoIMG } = require('../../configs/config.json');
 
 module.exports = {
@@ -30,8 +30,8 @@ module.exports = {
                 }
                 
                 const embed = new EmbedBuilder()
-                    .setTitle("Attiva le notifiche e ottieni nuovi ruoli")
-                    .setDescription("Non perderti tutti gli sviluppi di OverLegend attivando le notifiche sui tuoi canali preferiti.\n")
+                    .setTitle("Ricevi gli ultimi aggiornamenti")
+                    .setDescription("Assicurati di ricevere gli aggiornamenti di OverLegend abilitando le notifiche sui canali che preferisci.\n")
                     .setColor(Number(primaryColor))
                     .setTimestamp()
                     .setFooter({ text: "OverLegend", iconURL: logoIMG });
