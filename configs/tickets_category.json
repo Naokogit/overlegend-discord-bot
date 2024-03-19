@@ -21,7 +21,7 @@
                 {
                     "label": "Segnalazione Giocatore",
                     "emoji": "🤵",
-                    "text": "Segnalazione Giocatore",
+                    "text": "Segnala un giocatore",
                     "id": "user_report"
                 },
                 {
@@ -92,19 +92,19 @@
             "subcategory": [
                 {
                     "label": "Candidatura Sviluppatore",
-                    "emoji": "👜",
+                    "emoji": "⚙️",
                     "text": "Apri il ticket per candidarti come Sviluppatore",
                     "id": "developer"
                 },
                 {
                     "label": "Candidatura Builder",
-                    "emoji": "👜",
+                    "emoji": "👷🏼",
                     "text": "Apri il ticket per candidarti come Builder",
                     "id": "builder"
                 },
                 {
                     "label": "Candidatura Helper",
-                    "emoji": "👜",
+                    "emoji": "⛑️",
                     "text": "Apri il ticket per candidarti come Helper",
                     "id": "helper"
                 }

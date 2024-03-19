@@ -1,10 +1,10 @@
 const { Events, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, ChannelType, PermissionsBitField, EmbedBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, Client, Embed, shouldUseGlobalFetchAndWebSocket} = require("discord.js");
 
-const { ticketsCategory, ticketsRole, adminRole, primaryColor, logoIMG } = require('../../configs/config.json');
+const { ticketsCategory, ticketsRole, adminRole, primaryColor, logoIMG, ticketsRoleAccount, ticketsRoleDeveloper, ticketsRoleGamemode, ticketsRoleHelper, ticketsRoleBuilder, ticketsRoleCommercial } = require('../../configs/config.json');
 const ticket = require('../../schemas/ticketSchema');
 
 const { ticketCategories } = require('../../configs/tickets_category.json');
-const { ticketPermissionAdmin, ticketPermissionDefault } = require('../../modules/permissionModule');
+const { ticketPermissionAdmin, ticketPermissionDefault, ticketPermissionGamemode, ticketPermissionAccount, ticketPermissionCommercial, ticketPermissionApplicationBuilder, ticketPermissionApplicationDeveloper, ticketPermissionApplicationHelper } = require('../../modules/permissionModule');
 
 module.exports = {
     name: Events.InteractionCreate,
@@ -42,6 +42,7 @@ module.exports = {
             var ticketTitle;
             var ticketPermissionOverwrites;
             var ticketProperties = {};
+            var ticketPing;
             
             const fields = ['nickname', 'device', 'topic', 'issue', 'premium', 'newaccount', 'secondaccount', 'date', 'devrole', 'userreport', 'medialink', 'media_average', 'weekly_videos', 'channel_description'];
 
@@ -59,19 +60,43 @@ module.exports = {
             switch (category) {
                 case 'gamemode':    
                     ticketName = `${interaction.user.username}-ticket`
-                    ticketPermissionOverwrites = ticketPermissionDefault(interaction);
+                    ticketPermissionOverwrites = ticketPermissionGamemode(interaction);
+                    ticketPing = ticketsRoleGamemode;
                     break;
                 case 'account':
                     ticketName = `${interaction.user.username}-account`
-                    ticketPermissionOverwrites = ticketPermissionAdmin(interaction);
+                    ticketPermissionOverwrites = ticketPermissionAccount(interaction);
+                    ticketPing = ticketsRoleAccount;
                     break;
                 case 'application':
                     ticketName = `${interaction.user.username}-candidatura`
-                    ticketPermissionOverwrites = ticketPermissionDefault(interaction);
                     break;
                 case 'commercial':
                     ticketName = `${interaction.user.username}-commerciale`
-                    ticketPermissionOverwrites = ticketPermissionAdmin(interaction);
+                    ticketPermissionOverwrites = ticketPermissionCommercial(interaction);
+                    ticketPing = ticketsRoleCommercial;
+                    break;
+            }
+
+            switch(subcategory) {
+                    // case "info":
+                // case "bug_report":
+                // case "user_report":
+                // case "other":
+                //     ticketPing = ticketsRoleGamemode;
+                //     break;
+                case "developer":
+                    ticketPing = ticketsRoleDeveloper;
+                    ticketPermissionOverwrites = ticketPermissionApplicationDeveloper(interaction);
+                    break;
+                case "builder":
+                    ticketPing = ticketsRoleBuilder;
+                    ticketPermissionOverwrites = ticketPermissionApplicationBuilder(interaction);
+                    break;
+                case "helper":
+                    ticketPing = ticketsRoleHelper;
+                    ticketPermissionOverwrites = ticketPermissionApplicationHelper(interaction);
+                    break;
             }
                 
             console.log(`[DB] Creating a new ticket...`)
@@ -82,7 +107,7 @@ module.exports = {
                 topic: `Utente che ha aperto il ticket: ${interaction.user.username}/${category}${subcategory ? "/" + subcategory : "/none"}/${interaction.user.id}`,
                 permissionOverwrites: ticketPermissionOverwrites,
             });
-            
+        
             await ticket.create({
                 autoIncrement: 0, // Se è il primo ticket in esistenza
                 userId: userId,
@@ -147,7 +172,7 @@ module.exports = {
             const row = new ActionRowBuilder().addComponents(closeBtn, closeReasonBtn, claimTicketBtn);
             
             await channel.send({embeds: [ticketEmbed], components: [row]});
-            const msg = await channel.send({ content: `<@&${ticketsRole}>` });
+            const msg = await channel.send({ content: `<@&${ticketPing}>` });
             msg.delete().catch(err =>{});
 
             embedEphemeral

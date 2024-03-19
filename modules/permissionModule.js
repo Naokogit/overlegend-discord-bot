@@ -1,5 +1,5 @@
 const { PermissionsBitField } = require("discord.js");
-const { ticketsRole, adminRole } = require('../configs/config.json');
+const { ticketsRole, adminRole, ticketsRoleAccount, ticketsRoleBuilder, ticketsRoleCommercial, ticketsRoleDeveloper, ticketsRoleGamemode, ticketsRoleHelper } = require('../configs/config.json');
 
 // https://discord.com/developers/docs/topics/permissions#permissions-bitwise-permission-flags
 
@@ -53,49 +53,109 @@ SendVoiceMessages
 
 */
 
+
 const ticketViewPermissions = [
     PermissionsBitField.Flags.ViewChannel,
     PermissionsBitField.Flags.SendMessages,
     PermissionsBitField.Flags.EmbedLinks,
     PermissionsBitField.Flags.ReadMessageHistory,
-]
+];
+
+function buildPermissionObject(id, allow, deny = []) {
+    return {
+        id: id,
+        allow: allow,
+        deny: deny
+    };
+}
+
+function ticketPermission(interaction, roleID) {
+    const defaultPermissions = [
+        buildPermissionObject(interaction.guild.id, [], [PermissionsBitField.Flags.ViewChannel]),
+        buildPermissionObject(interaction.user.id, ticketViewPermissions, []),
+        buildPermissionObject(roleID, ticketViewPermissions, []),
+    ];
+
+    return defaultPermissions;
+}
 
 function ticketPermissionDefault(interaction) {
-    return [
-        {
-            id: interaction.guild.id, // DENY EVERYONE
-            deny: [
-                PermissionsBitField.Flags.ViewChannel
-            ],
-        },
-        {
-            id: interaction.user.id, allow: ticketViewPermissions,
-        },
-        {
-            id: ticketsRole, allow: [
-                PermissionsBitField.Flags.ViewChannel,
-            ],
-        },
-    ]
+    return ticketPermission(interaction, ticketsRole);
 }
 
 function ticketPermissionAdmin(interaction) {
-    return [
-        {
-            id: interaction.guild.id,
-            deny: [
-                PermissionsBitField.Flags.ViewChannel
-            ],
-        },
-        {
-            id: interaction.user.id, allow: ticketViewPermissions
-        },
-        {
-            id: adminRole, allow: [
-                PermissionsBitField.Flags.ViewChannel
-            ],
-        },
-    ]
+    return ticketPermission(interaction, adminRole);
 }
 
-module.exports = { ticketPermissionAdmin, ticketPermissionDefault, ticketViewPermissions };
+function ticketPermissionGamemode(interaction) {
+    return ticketPermission(interaction, ticketsRoleGamemode);
+}
+
+function ticketPermissionAccount(interaction) {
+    return ticketPermission(interaction, ticketsRoleAccount);
+}
+
+function ticketPermissionCommercial(interaction) {
+    return ticketPermission(interaction, ticketsRoleCommercial);
+}
+
+function ticketPermissionApplicationBuilder(interaction) {
+    return ticketPermission(interaction, ticketsRoleBuilder);
+}
+
+function ticketPermissionApplicationDeveloper(interaction) {
+    return ticketPermission(interaction, ticketsRoleDeveloper);
+}
+
+function ticketPermissionApplicationHelper(interaction) {
+    return ticketPermission(interaction, ticketsRoleHelper);    
+}
+// const ticketViewPermissions = [
+//     PermissionsBitField.Flags.ViewChannel,
+//     PermissionsBitField.Flags.SendMessages,
+//     PermissionsBitField.Flags.EmbedLinks,
+//     PermissionsBitField.Flags.ReadMessageHistory,
+// ]
+
+// function ticketPermissionDefault(interaction) {
+//     return [
+//         {
+//             id: interaction.guild.id, // DENY EVERYONE
+//             deny: [
+//                 PermissionsBitField.Flags.ViewChannel
+//             ],
+//         },
+//         {
+//             id: interaction.user.id, allow: ticketViewPermissions,
+//         },
+//         {
+//             id: ticketsRole, allow: [
+//                 PermissionsBitField.Flags.ViewChannel,
+//             ],
+//         },
+//     ]
+// }
+
+// function ticketPermissionAdmin(interaction) {
+//     return [
+//         {
+//             id: interaction.guild.id,
+//             deny: [
+//                 PermissionsBitField.Flags.ViewChannel
+//             ],
+//         },
+//         {
+//             id: interaction.user.id, allow: ticketViewPermissions
+//         },
+//         {
+//             id: adminRole, allow: [
+//                 PermissionsBitField.Flags.ViewChannel
+//             ],
+//         },
+//     ]
+// }
+
+function ticketPermissionGamemode(interaction) {
+}
+
+module.exports = { ticketPermissionAdmin, ticketPermissionDefault, ticketViewPermissions, ticketPermissionGamemode, ticketPermissionAccount, ticketPermissionCommercial, ticketPermissionApplicationBuilder, ticketPermissionApplicationDeveloper, ticketPermissionApplicationHelper};

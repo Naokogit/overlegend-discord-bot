@@ -1,5 +1,5 @@
 const { ActionRowBuilder, ButtonBuilder, EmbedBuilder, Events, } = require('discord.js');
-const { roles } = require('../../configs/roles.json');
+const { roles } = require('../../configs/roles_channel.json');
 const { primaryColor, logoIMG } = require('../../configs/config.json');
 
 
