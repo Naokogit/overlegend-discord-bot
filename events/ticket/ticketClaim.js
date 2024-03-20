@@ -9,6 +9,7 @@ module.exports = {
 
 
     async execute(interaction) {
+        try {
         if (interaction.isButton() && interaction.customId === 'btnClaimTicket') {
 
             if (!interaction.member.roles.cache.has(ticketsRole)) {
@@ -52,6 +53,7 @@ module.exports = {
                         });
                     }
             });
-        }
+            }
+        } catch (err) { console.log(err); }
     }
 }

@@ -11,11 +11,13 @@ module.exports = {
      * @param {Client} client 
      */
     async execute(client) {
-        const channel = await client.channels.cache.get(memberCountChannelId);
+        try {
+            const channel = await client.channels.cache.get(memberCountChannelId);
 
-        setInterval(() => {
-            const memberCount = channel.guild.memberCount;
-            channel.setName(`Membri Discord: ${memberCount}`);
-        }, 300000);
+            setInterval(() => {
+                const memberCount = channel.guild.memberCount;
+                channel.setName(`Membri Discord: ${memberCount}`);
+            }, 300000);
+        } catch (err) { console.log(err); }
     }
 }

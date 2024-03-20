@@ -18,18 +18,19 @@ module.exports = {
      */
     
     async execute(interaction) {
-        const sub = interaction.options.getSubcommand();
-        switch (sub) {
-            case 'setup':
+        try {
+            const sub = interaction.options.getSubcommand();
+            switch (sub) {
+                case 'setup':
 
-                if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-                    await interaction.reply({ content: '❌ Non puoi effettuare questa azione', ephemeral: true });
-                    return;
-                }
+                    if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
+                        await interaction.reply({ content: '❌ Non puoi effettuare questa azione', ephemeral: true });
+                        return;
+                    }
 
-                const embed = new EmbedBuilder()
-                    .setTitle("VERIFICATI PER INIZIARE")
-                    .setDescription(`
+                    const embed = new EmbedBuilder()
+                        .setTitle("VERIFICATI PER INIZIARE")
+                        .setDescription(`
                     Benvenuto nel Discord ufficiale di **OVERLEGEND**\n
                     Per continuare ad utilizzare il Server e poter visualizzare i canali testuali e vocali dedicati ti invitiamo a leggere ed accettare il regolamento.\n
                     📌 *E' vietata la pubblicazione di link non inerenti al Network*
@@ -39,24 +40,25 @@ module.exports = {
                     📌 *E' vietata la condivisione di media o argomenti che violano gli standard della community (18+).*\n
                     🔆 Buona permanenza.
                     - Lo staff di OVERLEGEND`)
-                    .setColor(Number(primaryColor))
-                    .setImage("https://images-ext-2.discordapp.net/external/k1YZbJ2tXttDdABQNhzLTv4nkShFxMu-hcF2TkpCeS4/https/imgur.com/uT4ki5Z.png?format=webp&quality=lossless&width=960&height=88")
-                    .setFooter({ text: "OverLegend", iconURL: logoIMG });
+                        .setColor(Number(primaryColor))
+                        .setImage("https://images-ext-2.discordapp.net/external/k1YZbJ2tXttDdABQNhzLTv4nkShFxMu-hcF2TkpCeS4/https/imgur.com/uT4ki5Z.png?format=webp&quality=lossless&width=960&height=88")
+                        .setFooter({ text: "OverLegend", iconURL: logoIMG });
                 
-                const verifyButton = new ButtonBuilder()
-                    .setCustomId("btnVerify")
-                    .setEmoji('✅')
-                    .setLabel("Verificati")
-                    .setStyle(ButtonStyle.Primary);
+                    const verifyButton = new ButtonBuilder()
+                        .setCustomId("btnVerify")
+                        .setEmoji('✅')
+                        .setLabel("Verificati")
+                        .setStyle(ButtonStyle.Primary);
                 
                 
-                const actionRow = new ActionRowBuilder().addComponents(verifyButton);
+                    const actionRow = new ActionRowBuilder().addComponents(verifyButton);
       
-                var channel = interaction.options.getChannel('channel');
-                const channel_interaction = interaction.client.channels.cache.get(channel.id);
-                channel_interaction.send({ embeds: [embed], components: [actionRow] });
+                    var channel = interaction.options.getChannel('channel');
+                    const channel_interaction = interaction.client.channels.cache.get(channel.id);
+                    channel_interaction.send({ embeds: [embed], components: [actionRow] });
                 
-                await interaction.reply({content: 'Setup verification effettuato', ephemeral: true});
-        }
+                    await interaction.reply({ content: 'Setup verification effettuato', ephemeral: true });
+            }
+        } catch (err) { console.log(err); }
     }
 }
