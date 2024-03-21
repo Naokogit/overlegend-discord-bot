@@ -33,133 +33,132 @@ module.exports = {
      * @param {ChatInputCommandInteraction} interaction 
      */
     async execute(interaction) {
-        try {
-            const sub = interaction.options.getSubcommand();
 
-            switch (sub) {
-                case 'setup':
+        const sub = interaction.options.getSubcommand();
 
-                    if (!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)) {
-                        await interaction.reply({ content: '❌ Non puoi effettuare questa azione', ephemeral: true });
-                        return;
-                    }
+        switch(sub){
+            case 'setup':
 
-                    var channel = interaction.options.getChannel('channel');
-                    const channel_interaction = interaction.client.channels.cache.get(channel.id);
+                if(!interaction.member.permissions.has(PermissionsBitField.Flags.Administrator)){
+                    await interaction.reply({content: '❌ Non puoi effettuare questa azione', ephemeral: true});
+                    return;
+                }
 
-                    const select = new StringSelectMenuBuilder()
-                        .setCustomId('ticketCreateSelect')
-                        .setPlaceholder('🌍 Seleziona una categoria')
-                        .setMinValues(1)
+                var channel = interaction.options.getChannel('channel');
+                const channel_interaction = interaction.client.channels.cache.get(channel.id);
 
-                    var desc = "";
+                const select = new StringSelectMenuBuilder()
+                .setCustomId('ticketCreateSelect')
+                .setPlaceholder('🌍 Seleziona una categoria')
+                .setMinValues(1)
+
+                var desc = "";
                 
-                    for (const category of Object.keys(ticketCategories)) {
-                        desc += "**" + ticketCategories[category].emoji + " " + ticketCategories[category].label + "**" + "\n";
-                        desc += "\`\`\`" + ticketCategories[category].long_description + "\`\`\`" + "\n";
-                        console.log(category);
-                        ticketCategories[category].value = category;
-                        select.addOptions(ticketCategories[category]);
-                    }
+                for(const category of Object.keys(ticketCategories)){
+                    desc += "**" + ticketCategories[category].emoji + " "+ ticketCategories[category].label + "**" + "\n";
+                    desc += "\`\`\`" + ticketCategories[category].long_description + "\`\`\`" + "\n";
+                    console.log(category);
+                    ticketCategories[category].value = category;
+                    select.addOptions(ticketCategories[category]);
+                }
 
-                    const row = new ActionRowBuilder().addComponents(select)
+                const row = new ActionRowBuilder().addComponents(select)
                 
-                    const ticket_embed = new EmbedBuilder()
-                        .setColor(Number(primaryColor))
-                        .setTitle(`${emojis.ol} SISTEMA DI SUPPORTO`)
-                        .setDescription(`
+                const ticket_embed = new EmbedBuilder()
+                    .setColor(Number(primaryColor))
+                    .setTitle(`${emojis.ol} SISTEMA DI SUPPORTO`)
+                    .setDescription(`
                     Selezionando una delle opzioni qua sotto potrai
                     parlare con lo staff in un canale privato.
                     
                     ${desc}
                     **⚠️ Non abusare del sistema dei ticket aprendone a vuoto. Può comportare una sospensione o un warn.**
                     `)
-                        .setImage(ticketIMG);
+                    .setImage(ticketIMG);
                     // .setFooter({text: "OverLegend • Sistema di supporto ticketing", iconURL: "https://i.imgur.com/IWbnKLl.png"})
                 
-                    await channel_interaction.send({ embeds: [ticket_embed], components: [row] });
-                    await interaction.reply({ content: 'Setup ticket effettuato', ephemeral: true });
-                    break;
-                case "addmember":
-                    if (!interaction.member.roles.cache.has(ticketsRole)) {
-                        await interaction.reply({ content: `❌ Non puoi effettuare questa azione`, ephemeral: true });
-                        return;
-                    }
+                await channel_interaction.send({embeds: [ticket_embed], components: [row]});
+                await interaction.reply({content: 'Setup ticket effettuato', ephemeral: true});
+            break;
+            case "addmember":
+                if (!interaction.member.roles.cache.has(ticketsRole)) {
+                    await interaction.reply({ content: `❌ Non puoi effettuare questa azione`, ephemeral: true });
+                    return;
+                }
 
-                    var user = interaction.options.getUser('user');
-                    var channel = interaction.client.channels.cache.get(interaction.channelId);
+                var user = interaction.options.getUser('user');
+                var channel = interaction.client.channels.cache.get(interaction.channelId);
                 
-                    var embed = new EmbedBuilder()
-                        .setTimestamp()
-                        .setColor(Number(primaryColor))
-                        .setFooter({ text: "OverLegend", iconURL: logoIMG });
-                    if (!channel.permissionsFor(user).has(PermissionsBitField.Flags.ViewChannel)) {
+                var embed = new EmbedBuilder()
+                    .setTimestamp()
+                    .setColor(Number(primaryColor))
+                    .setFooter({ text: "OverLegend", iconURL: logoIMG });
+                if (!channel.permissionsFor(user).has(PermissionsBitField.Flags.ViewChannel)) {
                     
-                        embed.setTitle(`➕ Aggiunto nuovo membro al ticket`)
-                            .setDescription(`<@${user.id}> è stato aggiunto al ticket <#${channel.id}>`)
-                        const ticketInformation = getTicketCacheInformation(interaction);
+                    embed.setTitle(`➕ Aggiunto nuovo membro al ticket`)
+                        .setDescription(`<@${user.id}> è stato aggiunto al ticket <#${channel.id}>`)
+                    const ticketInformation = getTicketCacheInformation(interaction);
                     
-                        const query = { userId: ticketInformation.userId, category: ticketInformation.category, status: "open" }
+                    const query = {userId: ticketInformation.userId, category: ticketInformation.category, status: "open"}
                     
-                        var addedUsers = [];
-                        const data = await ticket.findOne(query);
+                    var addedUsers = [];
+                    const data = await ticket.findOne(query);
                     
-                        addedUsers = data?.addedUsers;
-                        addedUsers.push(user.id);
+                    addedUsers = data?.addedUsers;
+                    addedUsers.push(user.id);
                     
-                        await ticket.updateOne(query, { $set: { addedUsers: addedUsers } }).then(async function () {
-                            await channel.permissionOverwrites.edit(user, {
-                                ViewChannel: true,
-                                ReadMessageHistory: true,
-                            });
-                            await interaction.reply({ embeds: [embed] });
+                    await ticket.updateOne(query, { $set: { addedUsers: addedUsers } }).then(async function () {
+                        await channel.permissionOverwrites.edit(user, {
+                            ViewChannel: true,
+                            ReadMessageHistory: true,
                         });
+                        await interaction.reply({ embeds: [embed] });
+                    });
                     
-                        return;
-                    }
-                    embed.setTitle("❌ Questo membro è già presente")
-                        .setDescription(`<@${user.id}> è già presente all'interno del ticket <#${channel.id}>`)
+                    return;
+                }
+                embed.setTitle("❌ Questo membro è già presente")
+                .setDescription(`<@${user.id}> è già presente all'interno del ticket <#${channel.id}>`)
                 
-                    await interaction.reply({ embeds: [embed], ephemeral: true });
-                    break;
-                case "removemember":
-                    if (!interaction.member.roles.cache.has(ticketsRole)) {
-                        await interaction.reply({ content: `❌ Non puoi effettuare questa azione`, ephemeral: true });
-                        return;
-                    }
-                    var user = interaction.options.getUser('user');
-                    var channel = interaction.client.channels.cache.get(interaction.channelId);
+                await interaction.reply({ embeds: [embed], ephemeral: true });
+                break;
+            case "removemember":
+                if (!interaction.member.roles.cache.has(ticketsRole)) {
+                    await interaction.reply({ content: `❌ Non puoi effettuare questa azione`, ephemeral: true });
+                    return;
+                }
+                var user = interaction.options.getUser('user');
+                var channel = interaction.client.channels.cache.get(interaction.channelId);
 
-                    var embed = new EmbedBuilder()
-                        .setTimestamp()
-                        .setColor(Number(primaryColor))
-                        .setFooter({ text: "OverLegend", iconURL: logoIMG });
+                var embed = new EmbedBuilder()
+                .setTimestamp()
+                .setColor(Number(primaryColor))
+                .setFooter({ text: "OverLegend", iconURL: logoIMG });
 
-                    if (channel.permissionsFor(user).has(PermissionsBitField.Flags.ViewChannel)) {
-                        embed.setTitle(`➖ Rimosso membro dal ticket`)
-                            .setDescription(`<@${user.id}> è stato rimosso dal ticket <#${channel.id}>`)
+                if (channel.permissionsFor(user).has(PermissionsBitField.Flags.ViewChannel)) {
+                    embed.setTitle(`➖ Rimosso membro dal ticket`)
+                        .setDescription(`<@${user.id}> è stato rimosso dal ticket <#${channel.id}>`)
                     
-                        const ticketInformation = getTicketCacheInformation(interaction);
+                    const ticketInformation = getTicketCacheInformation(interaction);
                 
-                        const query = { userId: ticketInformation.userId, category: ticketInformation.category, status: "open" }
+                    const query = {userId: ticketInformation.userId, category: ticketInformation.category, status: "open"}
                     
-                        var addedUsers = []
-                        const data = await ticket.findOne(query);
-                        addedUsers = data?.addedUsers;
+                    var addedUsers = []
+                    const data = await ticket.findOne(query);
+                    addedUsers = data?.addedUsers;
 
-                        addedUsers.splice(addedUsers.indexOf(user.id), 1)
+                    addedUsers.splice(addedUsers.indexOf(user.id), 1)
 
-                        await ticket.updateOne(query, { $set: { addedUsers: addedUsers } }).then(async function () {
-                            await channel.permissionOverwrites.edit(user, { ViewChannel: false });
-                            await interaction.reply({ embeds: [embed] });
-                        });
-                        return;
-                    }
-                    embed.setTitle("❌ Questo membro non è presente")
-                        .setDescription(`<@${user.id}> non è presente all'interno del ticket <#${channel.id}>`)
+                    await ticket.updateOne(query, { $set: { addedUsers: addedUsers } }).then(async function () {
+                        await channel.permissionOverwrites.edit(user, { ViewChannel: false });
+                        await interaction.reply({ embeds: [embed] });
+                    });
+                    return;
+                }
+                embed.setTitle("❌ Questo membro non è presente")
+                .setDescription(`<@${user.id}> non è presente all'interno del ticket <#${channel.id}>`)
                 
-                    await interaction.reply({ embeds: [embed], ephemeral: true });
-            }
-        } catch (err) { console.log(err); }
+                await interaction.reply({ embeds: [embed], ephemeral: true });
+        }
     }
 }

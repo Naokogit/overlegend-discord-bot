@@ -8,23 +8,22 @@ module.exports = {
     name: Events.GuildMemberAdd,
 
     async execute(member) {
-        try {
-            if (member.user.bot) return;
+      
+        if (member.user.bot) return;
 
-            const random = frasi[Math.floor(Math.random() * frasi.length)]
+        const random = frasi[Math.floor(Math.random() * frasi.length)]
 
-            const embed = new EmbedBuilder()
-                .setTitle(`Benvenuto nel Discord ufficiale di OVERLEGEND`)
-                .setDescription(`Benvenuto <@${member.id}> su OverLegend, \n${random}\n\nIP: mc.overlegend.it`)
-                .setColor(Number(primaryColor))
-                .setImage(welcomeIMG)
-                .setThumbnail(logoIMG)
-                .setTimestamp()
-                .setFooter({ text: "OverLegend", iconURL: logoIMG });
+        const embed = new EmbedBuilder()
+            .setTitle(`Benvenuto nel Discord ufficiale di OVERLEGEND`)
+            .setDescription(`Benvenuto <@${member.id}> su OverLegend, \n${random}\n\nIP: mc.overlegend.it`)
+            .setColor(Number(primaryColor))
+            .setImage(welcomeIMG)
+            .setThumbnail(logoIMG)
+            .setTimestamp()
+            .setFooter({ text: "OverLegend", iconURL: logoIMG });
 
-            const channel = member.guild.channels.cache.get(welcomeChannelId);
-            channel.send({ embeds: [embed] });
-            member.send({ embeds: [embed] }).catch(err => { });
-        } catch (err) { console.log(err); }
+        const channel = member.guild.channels.cache.get(welcomeChannelId);
+        channel.send({embeds: [embed]});
+        member.send({embeds: [embed]}).catch(err => { }); 
     }
 }
