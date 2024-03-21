@@ -125,7 +125,7 @@ module.exports = {
                 .setCustomId(`suggestion.${newSuggestion.autoIncrement}.downvote`)
                 
             const approveButton = new ButtonBuilder()
-                .setEmoji(':white_check_mark:')
+                .setEmoji('💯')
                 .setLabel('Approva')
                 .setStyle(ButtonStyle.Success)
                 .setCustomId(`suggestion.${newSuggestion.autoIncrement}.approve`)
