@@ -155,7 +155,4 @@ function ticketPermissionApplicationHelper(interaction) {
 //     ]
 // }
 
-function ticketPermissionGamemode(interaction) {
-}
-
 module.exports = { ticketPermissionAdmin, ticketPermissionDefault, ticketViewPermissions, ticketPermissionGamemode, ticketPermissionAccount, ticketPermissionCommercial, ticketPermissionApplicationBuilder, ticketPermissionApplicationDeveloper, ticketPermissionApplicationHelper};
