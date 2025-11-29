@@ -64,6 +64,26 @@
                 }
             ]
         },
+        "support": {
+            "label": "Supporto sanzioni/comportamenti staff",
+            "emoji": "⚖️",
+            "long_description": "Per reclami sulle sanzioni ricevute o segnalazioni sul comportamento dello staff.",
+            "description": "Reclami sanzioni e segnalazioni comportamento staff.",
+            "subcategory": [
+                {
+                    "label": "Reclamo sanzione",
+                    "emoji": "📢",
+                    "text": "Apri un reclamo per una sanzione ricevuta",
+                    "id": "reclamo_sanzione"
+                },
+                {
+                    "label": "Segnala comportamento staff",
+                    "emoji": "👮",
+                    "text": "Segnala un comportamento scorretto di un membro dello staff",
+                    "id": "segnala_staff"
+                }
+            ]
+        },
         "commercial": {
             "label": "Supporto Commerciale",
             "emoji": "💸",
@@ -107,26 +127,6 @@
                     "emoji": "⛑️",
                     "text": "Apri il ticket per candidarti come Helper",
                     "id": "helper"
-                }
-            ]
-        },
-        "support": {
-            "label": "Supporto sanzioni/comportamenti staff",
-            "emoji": "⚖️",
-            "long_description": "Per reclami sulle sanzioni ricevute o segnalazioni sul comportamento dello staff.",
-            "description": "Reclami sanzioni e segnalazioni comportamento staff.",
-            "subcategory": [
-                {
-                    "label": "Reclamo sanzione",
-                    "emoji": "📢",
-                    "text": "Apri un reclamo per una sanzione ricevuta",
-                    "id": "reclamo_sanzione"
-                },
-                {
-                    "label": "Segnala comportamento staff",
-                    "emoji": "👮",
-                    "text": "Segnala un comportamento scorretto di un membro dello staff",
-                    "id": "segnala_staff"
                 }
             ]
         }
