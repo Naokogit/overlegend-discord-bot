@@ -70,6 +70,12 @@ const ticketSchema = new Schema({
     },
     transcriptHTML: {
         type: String
+    },
+    sanzioneId: {
+        type: String
+    },
+    staffSegnalato: {
+        type: String
     }
 });
 

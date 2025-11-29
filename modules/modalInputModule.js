@@ -34,6 +34,11 @@ const channelDescriptionInput = createModalInput("channel_description", "Descriz
 // Candidatura 
 const devroleInput = createModalInput("devrole", "Per quale ruolo ti stai candidando", TextInputStyle.Short, "Dev o Pluginner", 3, 9, true);
 
+// Supporto sanzioni/comportamenti staff
+const sanzioneIdInput = createModalInput("sanzioneId", "Id Sanzione", TextInputStyle.Short, "Inserisci l'ID della sanzione", 1, 100, true);
+
+const staffSegnalatoInput = createModalInput("staffSegnalato", "Staff segnalato", TextInputStyle.Short, "Inserisci il nome o menzione dello staff", 2, 100, true);
+
 function createModalInput(customId, label, style, placeholder, minLength, maxLength, required) {
     return new TextInputBuilder()
         .setCustomId(customId)
@@ -45,4 +50,4 @@ function createModalInput(customId, label, style, placeholder, minLength, maxLen
         .setRequired(required);
 }
 
-module.exports = { nicknameInput, issueInput, premiumInput, deviceInput, topicInput, newAccountInput, mediaLinkInput, dateInput, mediaAverageViewersInput, devroleInput, secondAccountInput, userReportInput, videoPerWeekInput, channelDescriptionInput };
+module.exports = { nicknameInput, issueInput, premiumInput, deviceInput, topicInput, newAccountInput, mediaLinkInput, dateInput, mediaAverageViewersInput, devroleInput, secondAccountInput, userReportInput, videoPerWeekInput, channelDescriptionInput, sanzioneIdInput, staffSegnalatoInput };

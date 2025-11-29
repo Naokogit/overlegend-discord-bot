@@ -1,5 +1,16 @@
 const { PermissionsBitField } = require("discord.js");
-const { ticketsRole, adminRole, ticketsRoleAccount, ticketsRoleBuilder, ticketsRoleCommercial, ticketsRoleDeveloper, ticketsRoleGamemode, ticketsRoleHelper } = require('../configs/config.json');
+const {
+    ticketsRole,
+    adminRole,
+    ticketsRoleAccount,
+    ticketsRoleBuilder,
+    ticketsRoleCommercial,
+    ticketsRoleDeveloper,
+    ticketsRoleGamemode,
+    ticketsRoleHelper,
+    ticketsRoleReclami,
+    ticketsRoleStaff,
+} = require("../configs/config.json");
 
 // https://discord.com/developers/docs/topics/permissions#permissions-bitwise-permission-flags
 
@@ -53,7 +64,6 @@ SendVoiceMessages
 
 */
 
-
 const ticketViewPermissions = [
     PermissionsBitField.Flags.ViewChannel,
     PermissionsBitField.Flags.SendMessages,
@@ -65,13 +75,17 @@ function buildPermissionObject(id, allow, deny = []) {
     return {
         id: id,
         allow: allow,
-        deny: deny
+        deny: deny,
     };
 }
 
 function ticketPermission(interaction, roleID) {
     const defaultPermissions = [
-        buildPermissionObject(interaction.guild.id, [], [PermissionsBitField.Flags.ViewChannel]),
+        buildPermissionObject(
+            interaction.guild.id,
+            [],
+            [PermissionsBitField.Flags.ViewChannel]
+        ),
         buildPermissionObject(interaction.user.id, ticketViewPermissions, []),
         buildPermissionObject(roleID, ticketViewPermissions, []),
     ];
@@ -108,7 +122,15 @@ function ticketPermissionApplicationDeveloper(interaction) {
 }
 
 function ticketPermissionApplicationHelper(interaction) {
-    return ticketPermission(interaction, ticketsRoleHelper);    
+    return ticketPermission(interaction, ticketsRoleHelper);
+}
+
+function ticketPermissionReclami(interaction) {
+    return ticketPermission(interaction, ticketsRoleReclami);
+}
+
+function ticketPermissionStaff(interaction) {
+    return ticketPermission(interaction, ticketsRoleStaff);
 }
 // const ticketViewPermissions = [
 //     PermissionsBitField.Flags.ViewChannel,
@@ -155,4 +177,16 @@ function ticketPermissionApplicationHelper(interaction) {
 //     ]
 // }
 
-module.exports = { ticketPermissionAdmin, ticketPermissionDefault, ticketViewPermissions, ticketPermissionGamemode, ticketPermissionAccount, ticketPermissionCommercial, ticketPermissionApplicationBuilder, ticketPermissionApplicationDeveloper, ticketPermissionApplicationHelper};
+module.exports = {
+    ticketPermissionAdmin,
+    ticketPermissionDefault,
+    ticketViewPermissions,
+    ticketPermissionGamemode,
+    ticketPermissionAccount,
+    ticketPermissionCommercial,
+    ticketPermissionApplicationBuilder,
+    ticketPermissionApplicationDeveloper,
+    ticketPermissionApplicationHelper,
+    ticketPermissionReclami,
+    ticketPermissionStaff,
+};

@@ -1,10 +1,10 @@
 const { Events, ModalBuilder, TextInputBuilder, TextInputStyle, ActionRowBuilder, ChannelType, PermissionsBitField, EmbedBuilder, ButtonBuilder, ButtonStyle, CommandInteraction, Client, Embed, shouldUseGlobalFetchAndWebSocket} = require("discord.js");
 
-const { ticketsCategory, ticketsRole, adminRole, primaryColor, logoIMG, ticketsRoleAccount, ticketsRoleDeveloper, ticketsRoleGamemode, ticketsRoleHelper, ticketsRoleBuilder, ticketsRoleCommercial } = require('../../configs/config.json');
+const { ticketsCategory, ticketsRole, adminRole, primaryColor, logoIMG, ticketsRoleAccount, ticketsRoleDeveloper, ticketsRoleGamemode, ticketsRoleHelper, ticketsRoleBuilder, ticketsRoleCommercial, ticketsRoleReclami, ticketsRoleStaff } = require('../../configs/config.json');
 const ticket = require('../../schemas/ticketSchema');
 
 const { ticketCategories } = require('../../configs/tickets_category.json');
-const { ticketPermissionAdmin, ticketPermissionDefault, ticketPermissionGamemode, ticketPermissionAccount, ticketPermissionCommercial, ticketPermissionApplicationBuilder, ticketPermissionApplicationDeveloper, ticketPermissionApplicationHelper } = require('../../modules/permissionModule');
+const { ticketPermissionAdmin, ticketPermissionDefault, ticketPermissionGamemode, ticketPermissionAccount, ticketPermissionCommercial, ticketPermissionApplicationBuilder, ticketPermissionApplicationDeveloper, ticketPermissionApplicationHelper, ticketPermissionReclami, ticketPermissionStaff } = require('../../modules/permissionModule');
 
 module.exports = {
     name: Events.InteractionCreate,
@@ -44,7 +44,7 @@ module.exports = {
             var ticketProperties = {};
             var ticketPing;
             
-            const fields = ['nickname', 'device', 'topic', 'issue', 'premium', 'newaccount', 'secondaccount', 'date', 'devrole', 'userreport', 'medialink', 'media_average', 'weekly_videos', 'channel_description'];
+            const fields = ['nickname', 'device', 'topic', 'issue', 'premium', 'newaccount', 'secondaccount', 'date', 'devrole', 'userreport', 'medialink', 'media_average', 'weekly_videos', 'channel_description', 'sanzioneId', 'staffSegnalato'];
 
             fields.forEach(field => { try {
                     ticketProperties[field] = interaction.fields.getTextInputValue(field);
@@ -76,6 +76,9 @@ module.exports = {
                     ticketPermissionOverwrites = ticketPermissionCommercial(interaction);
                     ticketPing = ticketsRoleCommercial;
                     break;
+                case 'support':
+                    ticketName = `${interaction.user.username}-support`
+                    break;
             }
 
             switch(subcategory) {
@@ -96,6 +99,14 @@ module.exports = {
                 case "helper":
                     ticketPing = ticketsRoleHelper;
                     ticketPermissionOverwrites = ticketPermissionApplicationHelper(interaction);
+                    break;
+                case "reclamo_sanzione":
+                    ticketPing = ticketsRoleReclami;
+                    ticketPermissionOverwrites = ticketPermissionReclami(interaction);
+                    break;
+                case "segnala_staff":
+                    ticketPing = ticketsRoleStaff;
+                    ticketPermissionOverwrites = ticketPermissionStaff(interaction);
                     break;
             }
                 
@@ -124,6 +135,8 @@ module.exports = {
                 date: ticketProperties?.date,
                 devrole: ticketProperties?.devrole,
                 userreport: ticketProperties?.userreport,
+                sanzioneId: ticketProperties?.sanzioneId,
+                staffSegnalato: ticketProperties?.staffSegnalato,
             });
 
             const ticketEmbed = new EmbedBuilder()
@@ -150,6 +163,8 @@ module.exports = {
             if (ticketProperties.media_average) ticketEmbed.addFields({ name: '⚖️ Media spettatori/views', value: `\`\`\`${ticketProperties.media_average}\`\`\`` });
             if (ticketProperties.weekly_videos) ticketEmbed.addFields({ name: '🔢 Numero di Live/Video settimanali', value: `\`\`\`${ticketProperties.weekly_videos}\`\`\`` });
             if (ticketProperties.channel_description) ticketEmbed.addFields({ name: '📜 Descrizione del canale e dei contenuti', value: `\`\`\`${ticketProperties.channel_description}\`\`\`` });
+            if (ticketProperties.sanzioneId) ticketEmbed.addFields({ name: '🆔 Id Sanzione', value: `\`\`\`${ticketProperties.sanzioneId}\`\`\`` });
+            if (ticketProperties.staffSegnalato) ticketEmbed.addFields({ name: '👮 Staff segnalato', value: `\`\`\`${ticketProperties.staffSegnalato}\`\`\`` });
 
 
             const closeBtn = new ButtonBuilder()

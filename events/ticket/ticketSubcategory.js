@@ -8,7 +8,7 @@ const {
 
 const { ticketCategories } = require("../../configs/tickets_category.json");
 
-const { nicknameInput, issueInput, topicInput, deviceInput, premiumInput, newAccountInput, secondAccountInput, devroleInput, dateInput, userReportInput, videoPerWeekInput, channelDescriptionInput, mediaAverageViewersInput, mediaLinkInput } = require("../../modules/modalInputModule");
+const { nicknameInput, issueInput, topicInput, deviceInput, premiumInput, newAccountInput, secondAccountInput, devroleInput, dateInput, userReportInput, videoPerWeekInput, channelDescriptionInput, mediaAverageViewersInput, mediaLinkInput, sanzioneIdInput, staffSegnalatoInput } = require("../../modules/modalInputModule");
 
 const {subcategories, isSubcategory} = require('../../utils/getAllSubcategories');
 
@@ -95,6 +95,23 @@ module.exports = {
                         new ActionRowBuilder().addComponents(videoPerWeekInput),
                         new ActionRowBuilder().addComponents(channelDescriptionInput),
                         )
+                    break;
+                case "reclamo_sanzione":
+                    modal.addComponents(
+                        new ActionRowBuilder().addComponents(nicknameInput),
+                        new ActionRowBuilder().addComponents(sanzioneIdInput),
+                        new ActionRowBuilder().addComponents(topicInput),
+                        new ActionRowBuilder().addComponents(issueInput),
+                    );
+                    break;
+                case "segnala_staff":
+                    modal.addComponents(
+                        new ActionRowBuilder().addComponents(nicknameInput),
+                        new ActionRowBuilder().addComponents(staffSegnalatoInput),
+                        new ActionRowBuilder().addComponents(topicInput),
+                        new ActionRowBuilder().addComponents(issueInput),
+                    );
+                    break;
             }
             await interaction.showModal(modal);
         }

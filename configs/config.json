@@ -1,33 +1,27 @@
 {
     "clientId": "1190653727229608007",
     "guildId": "998304398511972362",
-
     "ticketsCategory": "1142568910483378237",
     "ticketsRole": "1142576254441230486",
     "ticketsDeposit": "1142570484156866700",
-    
     "ticketsRoleBuilder": "1220075306388553728",
     "ticketsRoleDeveloper": "1220075354438500395",
     "ticketsRoleHelper": "1220075260892942438",
     "ticketsRoleAccount": "1220075080042811463",
     "ticketsRoleGamemode": "1220074721249333382",
     "ticketsRoleCommercial": "1220075119079194716",
-
+    "ticketsRoleReclami": "1444450806345498765",
+    "ticketsRoleStaff": "1444450871587901440",
     "adminRole": "998304398511972369",
     "verifiedRole": "1038938715038425250",
-    
     "primaryColor": "0x503519",
     "secondaryColor": "0x503519",
     "logoIMG": "https://i.imgur.com/IWbnKLl.png",
-
     "welcomeChannelId": "1142596580902441030",
     "welcomeIMG": "https://images-ext-1.discordapp.net/external/GiN-0JyXuotJFFWAOIeYr8HYAmKXYwyhD_vzs8YqT3Q/https/imgur.com/7X3U5K9.png?format=webp&quality=lossless&width=914&height=84",
-
     "ticketIMG": "https://images-ext-1.discordapp.net/external/xDmWfZQnKepl4YtOXjKymdzkbO6mecZuO54ji85CjJ4/https/imgur.com/u5w5CQr.png?format=webp&quality=lossless&width=1216&height=111",
     "ticketChannel": "https://discord.com/channels/998304398511972362/1142568974551367740",
-
     "memberCountChannelId": "1220070211085139978",
-
     "suggestionsChannelId": "1368676784060760196",
     "debug": false
 }
